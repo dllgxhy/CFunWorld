@@ -12,9 +12,10 @@ class CFunUltrasonic
     CFunUltrasonic();
    // CFunUltrasonic(uint8_t pin);
     double distanceCm();
+  /*
     long measure1ms();
     long measure();
-    
+    */
   private:
     uint8_t _Trig;
     uint8_t _Echo;

@@ -23,6 +23,8 @@ class CFun7SegmentDisplay:public CFunPort
                 void reset(uint8_t port);
                 void redisplay(float value);
 		void display(float value);
+                void display(double value);
+                void display(int value);
                 void display(int8_t DispData[]);
 		void clearDisplay(void);
 	private:

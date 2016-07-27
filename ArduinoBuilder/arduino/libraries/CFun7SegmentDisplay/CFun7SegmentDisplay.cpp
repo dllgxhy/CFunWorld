@@ -23,6 +23,7 @@ static int8_t TubeTab[] = { //共阳数码管
                            0xff,0xef,0xf7,0xfc,//8~b
                            0xb9,0xde,0xf9,0xf1,0x40 //c~f,-
                            };
+boolean CFun7SegmentDisplay_first=0;
 CFun7SegmentDisplay::CFun7SegmentDisplay():CFunPort()
 {
 }
@@ -49,6 +50,11 @@ void CFun7SegmentDisplay::reset(uint8_t port){
         pinMode(RCLK,OUTPUT);
 }
 void CFun7SegmentDisplay::display(float value){
+  if(!CFun7SegmentDisplay_first)
+  {
+     redisplay(value);
+     CFun7SegmentDisplay_first++;
+  }
   if(value!=_disvalue)
   {
     _disvalue=value;
@@ -58,7 +64,9 @@ void CFun7SegmentDisplay::display(float value){
     redisplay(value);
   }
   }
+
 }
+
 void CFun7SegmentDisplay::redisplay(float value){
 	int i=0;
 	bool isStart = false;

@@ -8,18 +8,33 @@ CFunUltrasonic::CFunUltrasonic()
   _Echo = 3;
   pinMode(_Trig,OUTPUT);
   pinMode(_Echo,INPUT);
-  attachInterrupt(1, ius, FALLING);
+/*
+attachInterrupt(1, ius, FALLING);
+*/
 }
 
 
 double CFunUltrasonic::distanceCm()
 {
-    long distance = measure();
-    return ((double)distance / 58.0-10);//58
+  long duration;
+  pinMode(_Trig, OUTPUT);
+  pinMode(_Echo, INPUT);
+  digitalWrite(_Trig, LOW);
+  delayMicroseconds(2);
+  digitalWrite(_Trig, HIGH);
+  delayMicroseconds(20);
+  digitalWrite(_Trig, LOW);
+  duration = pulseIn(_Echo, HIGH);
+  duration = duration / 59;
+  if ((duration < 2) || (duration > 300)) return false;
+  return duration;
 }
-
+/*
+//改用无中断
 long CFunUltrasonic::measure1ms()
 {
+    pinMode(_Trig,OUTPUT);
+    pinMode(_Echo,INPUT);
     digitalWrite(_Trig,LOW);
     delayMicroseconds(2);
     digitalWrite(_Trig,HIGH);
@@ -42,3 +57,4 @@ long CFunUltrasonic::measure()
    }
    return _distance;
 }
+*/
