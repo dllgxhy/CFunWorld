@@ -110,14 +110,14 @@ public class DrawPropertyUI extends Sprite {
 	}
 
 	public var w:int, h:int;
-	public function setWidthHeight(w:int, h:int):void {
+	public function setWidthHeight(w:int, h:int,sx:int = 0,sy:int = 0):void {
 		this.w = w;
 		this.h = h;
 		var g:Graphics = bg.graphics;
 		g.clear();
 		g.lineStyle(1, CSS.borderColor);
 		g.beginFill(0xF6F6F6);
-		g.drawRect(0, 0, w - 1, h);
+		g.drawRect(sx, sy, w - 1, h);
 		fixLayout(w, h);
 	}
 

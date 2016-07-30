@@ -46,7 +46,8 @@ public class IconButton extends Sprite {
 	private var onImage:DisplayObject;
 	private var offImage:DisplayObject;
 
-	public function IconButton(clickFunction:Function, onImageOrName:*, offImageObj:DisplayObject = null, isRadioButton:Boolean = false) {
+	public function IconButton(clickFunction:Function, onImageOrName:*, offImageObj:DisplayObject = null, 
+					isRadioButton:Boolean = false) {
 		this.clickFunction = clickFunction;
 		this.isRadioButton = isRadioButton;
 		useDefaultImages();

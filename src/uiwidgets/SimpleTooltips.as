@@ -38,7 +38,8 @@ import translation.Translator;
 		 *
 		 */
 		static public function add(dObj:DisplayObject, opts:Object):void {
-			if(!instance) instance = new SimpleTooltip();
+			if (!instance) instance = new SimpleTooltip();
+			if (!dObj) return;  //xuhy 20160728
 			instance.addTooltip(dObj, opts);
 		}
 

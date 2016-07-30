@@ -888,7 +888,8 @@ package svgeditor {
 			if (name == null || [MouseCursor.HAND, MouseCursor.BUTTON].indexOf(name) > -1) {
 				currentCursor = (name == null ? MouseCursor.AUTO : name);
 				CursorTool.setCustomCursor(currentCursor);
-			} else {
+			} 
+			else {
 				if (bmp is String) bmp = Resources.createBmp(name).bitmapData;
 				CursorTool.setCustomCursor(name, bmp, hotSpot, reuse);
 				currentCursor = name;
@@ -898,7 +899,8 @@ package svgeditor {
 			if (stage && workArea.getInteractionLayer().hitTestPoint(stage.mouseX, stage.mouseY, true) &&
 				!uiLayer.hitTestPoint(stage.mouseX, stage.mouseY, true)) {
 				CursorTool.setCustomCursor(currentCursor);
-			} else {
+			}
+			else {
 				CursorTool.setCustomCursor(MouseCursor.AUTO);
 			}
 		}

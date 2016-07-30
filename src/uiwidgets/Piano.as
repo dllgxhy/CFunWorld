@@ -114,7 +114,7 @@ public class Piano extends Sprite {
 				}
 				if (isNoteSelected(n)) return;
 				selectNote(n);
-				playSoundForNote(n);
+				playSoundForNote(n);   //xuhy  查看此处的用途
 				return;
 			}
 		}

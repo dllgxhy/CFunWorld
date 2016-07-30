@@ -113,8 +113,6 @@ void setup() {
   gyro.begin();
 #endif
   Serial.begin(115200);
- 
-  // ir.begin();
 }
 ///////////////////////////////////////////////////////////////////////
 void loop() {
@@ -645,7 +643,6 @@ void parseData() {
         int red = readBuffer(dataIndex++);
         int green = readBuffer(dataIndex++);
         int blue = readBuffer(dataIndex++);
-        //   led.reset(9);
         led.setColorAt(red, green, blue);
       }
       break;
@@ -663,8 +660,6 @@ void parseData() {
         {
           _LCD[i] = readBuffer(dataIndex++);
         }
-        //  pinMode(pin, OUTPUT);
-        //  digitalWrite(13, LOW);
         lcd.LiquidCrystaldisplay(_LCD);
       }
       break;

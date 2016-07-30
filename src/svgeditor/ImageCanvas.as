@@ -345,7 +345,8 @@ return 1; // Force integer scaling in both editors for now
 			resize(currWidth, currHeight);
 		}
 
-		public function getZoomAndScroll():Array { return [visibleArea.scaleX, hScrollbar.scrollValue(), vScrollbar.scrollValue()] }
+		public function getZoomAndScroll():Array { 
+			return [visibleArea.scaleX, hScrollbar.scrollValue(), vScrollbar.scrollValue()] }
 
 		public function setZoomAndScroll(zoomAndScroll:Array):void {
 			var newZoom:Number = zoomAndScroll[0];

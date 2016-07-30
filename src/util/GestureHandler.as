@@ -338,6 +338,7 @@ public class GestureHandler {
 	public function mouseWheel(evt:MouseEvent):void {
 		hideBubble();
 	}
+	//此处增加按下ESC键后的操作
 
 	private function findMouseTarget(evt:MouseEvent, target:*):DisplayObject {
 		// Find the mouse target for the given event. Return null if no target found.
@@ -406,6 +407,7 @@ public class GestureHandler {
 		Menu.removeMenusFrom(stage);
 		if (!('objToGrab' in mouseTarget)) return;
 		if (!app.editMode) {
+			if (app.loadInProgress) return;  //xuhy 此处增加与github下载的一样，还不清楚作用
 			if ((mouseTarget is ScratchSprite) && !ScratchSprite(mouseTarget).isDraggable) return; // don't drag locked sprites in presentation mode
 			if ((mouseTarget is Watcher) || (mouseTarget is ListWatcher)) return; // don't drag watchers in presentation mode
 		}

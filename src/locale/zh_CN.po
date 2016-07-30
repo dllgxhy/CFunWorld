@@ -2545,6 +2545,10 @@ msgstr "摇杆X轴"
 msgid "joystick Y"
 msgstr "摇杆Y轴"
 
+
+msgid "set LCD1602 as %s"
+msgstr "设置LCD1602显示的数据为："
+
 msgid "Pin "
 msgstr "管脚 "
 

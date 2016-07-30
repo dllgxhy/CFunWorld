@@ -236,7 +236,7 @@ public class Watcher extends Sprite implements DragClient {
 			case "timeAndDate": return runtime.getTimeString(param);
 			case "xScroll": return app.stagePane.xScroll;
 			case "yScroll": return app.stagePane.yScroll;
-			case "readckkey1": return app.CKkey1;//_wh
+			case "readckkey1": return app.CKkey1;//_wh   //此处更改的是arduino机器人下的测控板模块
 			case "readckkey2": return app.CKkey2;//_wh
 			case "readcksound": return app.CKsound;//_wh
 			case "readckslide": return app.CKslide;//_wh
