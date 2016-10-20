@@ -105,6 +105,10 @@ public final class BitmapPencilTool extends SVGTool {
 
 	private function mouseUp(evt:MouseEvent):void {
 		if (brush) editor.saveContent();
+		resetBrushes();
+	}
+
+	protected function resetBrushes():void{
 		brush = eraser = tempBM = null;
 	}
 

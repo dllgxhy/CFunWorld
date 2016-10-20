@@ -55,7 +55,7 @@ public class Specs {
 	public static var parameterColor:int = 0x5947B1;
 	public static var extensionsColor:int = 0x4B4A60; // 0x72228C; // 0x672D79;
 	public static var cfunblocksColor:int = 0x0e9f97;//CFunMore模块颜色_wh 0x20b2aa
-	//public static var cfunblocksColor2:int = 0x008186;
+
 
 	private static const undefinedColor:int = 0xD42828;
 

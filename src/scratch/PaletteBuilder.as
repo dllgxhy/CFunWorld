@@ -34,8 +34,8 @@ package scratch {
 	import flash.net.navigateToURL;
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
-	import flash.text.TextFieldType;
-	import flash.text.TextFormat;
+//	import flash.text.TextFieldType;
+//	import flash.text.TextFormat;
 	import flash.text.TextField;
 	import blocks.Block;
 	import blocks.BlockArg;

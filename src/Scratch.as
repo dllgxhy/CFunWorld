@@ -26,6 +26,7 @@ package {
 import com.quetwo.Arduino.ArduinoConnector;
 import com.quetwo.Arduino.ArduinoConnectorEvent;
 
+
 import flash.desktop.NativeApplication;
 import flash.desktop.NativeProcess;
 import flash.desktop.NativeProcessStartupInfo;
@@ -1200,7 +1201,7 @@ public class Scratch extends Sprite {
 		d.showOnStage(stage, true);
 	}
 
-	//help菜单_wh
+	//help菜单
 	public function showHelpMenu(b:*):void {
 		var m:Menu = new Menu(null, 'More', CSS.topBarColor, 28);
 		m.addItem('YoungMaker', forum2);
@@ -1454,7 +1455,7 @@ public class Scratch extends Sprite {
 		nativePSInfo.executable = file;
 		process.start(nativePSInfo);//执行dos命令_wh
 		process.standardInput.writeUTFBytes("cd /d "+file0.nativePath+"\r\n");//cmd命令路径，回车符，/r/n_wh
-		process.standardInput.writeUTFBytes("avrdude -p m328p -c arduino -b 115200 -P "+comIDTrue+ " -U flash:w:CFun_uno.hex"+"\r\n");//avrdude命令行_wh
+		process.standardInput.writeUTFBytes("avrdude -p m328p -c arduino -b 115200 -P "+comIDTrue+ " -U flash:w:S4A.hex"+"\r\n");//avrdude命令行_wh
 		
 		//等待文本框提示_wh
 		UpDialog.setText(Translator.map("uploading") + " ... ");

@@ -32,7 +32,7 @@ public class Variable {
 	public var watcher:*;
 	public var isPersistent:Boolean;
 	
-	//public var isArduinoDef:Boolean = false;//是否Arduino程序生成中已经变量定义_wh
+
 
 	public function Variable(vName:String, initialValue:*) {
 		name = vName;

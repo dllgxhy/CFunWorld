@@ -235,10 +235,7 @@ public class Interpreter {
 
 	public function stopAllThreads():void {
 		threads = [];
-		if (activeThread != null) 
-		{
-			activeThread.stop();
-		}
+		if (activeThread != null) activeThread.stop();
 		clearWarpBlock();
 		app.runtime.clearRunFeedback();
 		doRedraw = true;
@@ -2415,6 +2412,7 @@ public class Interpreter {
 						app.ArduinoLoopFs.writeUTFBytes("delay(" + "1000*" + app.ArduinoMathStr[0] + ");" + '\n');
 					else
 						app.ArduinoDoFs.writeUTFBytes("delay(" + "1000*" + app.ArduinoMathStr[0] + ");" + '\n');
+					app.ArduinoMathFlag = false;
 					app.ArduinoMathFlag = false;
 				}
 				else

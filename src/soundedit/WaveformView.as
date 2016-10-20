@@ -384,6 +384,7 @@ public class WaveformView extends Sprite implements DragClient {
 		var max:int, i:int;
 		var dups:int = 2 * (44100 / samplingRate); // number of copies of each samples to write
 		if (dups & 1) dups++; // ensure that dups is even
+		if (playEndIndex > samples.length) playEndIndex = samples.length; // xuhy_20160812
 		var count:int = 6000 / dups;
 		for (i = 0; i < count && (playIndex < playEndIndex); i++) {
 			var sample:Number = samples[playIndex++] / 32767;

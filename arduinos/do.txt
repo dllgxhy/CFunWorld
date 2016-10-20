@@ -1,3 +1,0 @@
-delay(20);
-lcd.init();
-lcd.LiquidCrystaldisplay(String("hello xuhy"));

@@ -930,8 +930,8 @@ package primitives
 			}
 			else//正常上位机运行模式_wh
 			{
-				var pin:Number = interp.numarg(b,0);//引脚号，模块参数第一个，参数类型为数字_wh
-				var pwm:Number = interp.numarg(b,1);//PWM值，模块参数第一个，参数类型为数字_wh
+				pin = interp.numarg(b,0);//引脚号，模块参数第一个，参数类型为数字_wh
+				pwm = interp.numarg(b,1);//PWM值，模块参数第一个，参数类型为数字_wh
 				//内嵌模块，没有有效返回_wh
 				if(app.interp.activeThread.ArduinoNA)//加有效性判断_wh
 				{
@@ -1008,8 +1008,8 @@ package primitives
 			}
 			else
 			{
-				var pin:Number = interp.numarg(b,0);//引脚号，模块参数第一个，参数类型为数字_wh
-				var angle:Number = interp.numarg(b,1);//角度值，模块参数第一个，参数类型为数字_wh
+				pin = interp.numarg(b,0);//引脚号，模块参数第一个，参数类型为数字_wh
+				angle = interp.numarg(b,1);//角度值，模块参数第一个，参数类型为数字_wh
 				//内嵌模块，没有有效返回_wh
 				if(app.interp.activeThread.ArduinoNA)//加有效性判断_wh
 				{
@@ -1216,8 +1216,8 @@ package primitives
 			}
 			else
 			{
-				var pin:Number = interp.numarg(b,0);
-				var num:Number = interp.numarg(b,1);
+				pin = interp.numarg(b,0);
+				num = interp.numarg(b,1);
 				//内嵌模块，没有有效返回_wh
 				if(app.interp.activeThread.ArduinoNA)//加有效性判断_wh
 				{
@@ -1333,8 +1333,8 @@ package primitives
 					pin = 5;
 				else
 					pin = 6;
-				var dirs:String = interp.arg(b,1);//角度值，模块参数第一个，参数类型为数字_wh
-				var pwm:Number = interp.numarg(b,2);//角度值，模块参数第一个，参数类型为数字_wh
+				dirs = interp.arg(b,1);//角度值，模块参数第一个，参数类型为数字_wh
+				pwm = interp.numarg(b,2);//角度值，模块参数第一个，参数类型为数字_wh
 				//内嵌模块，没有有效返回_wh
 				if(app.interp.activeThread.ArduinoNA)//加有效性判断_wh
 				{
@@ -1467,9 +1467,9 @@ package primitives
 			}
 			else
 			{
-				var red:Number = interp.numarg(b,0);//red_wh
-				var green:Number = interp.numarg(b,1);//red_wh
-				var bule:Number = interp.numarg(b,2);//red_wh
+				red = interp.numarg(b,0);//red_wh
+				green = interp.numarg(b,1);//red_wh
+				bule = interp.numarg(b,2);//red_wh
 				//内嵌模块，没有有效返回_wh
 				if(app.interp.activeThread.ArduinoNA)//加有效性判断_wh
 				{

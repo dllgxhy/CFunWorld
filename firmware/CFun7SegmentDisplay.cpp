@@ -41,7 +41,7 @@ void CFun7SegmentDisplay::reset(uint8_t port){
         _port = port;
 	s1 = cfunPort[port].s1;
 	s2 = cfunPort[port].s2;
-        s3 = cfunPort[port].s3;
+    s3 = cfunPort[port].s3;
 	DIO = s1;
 	SCLK = s2;
         RCLK= s3;

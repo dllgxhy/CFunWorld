@@ -258,7 +258,7 @@ public class MediaLibrary extends Sprite {
 		themeFilter.visible = (['sprite', 'costume', 'backdrop'].indexOf(assetType) > -1);
 		imageTypeFilter.visible = (['sprite', 'costume'].indexOf(assetType) > -1);
 		spriteFeaturesFilter.visible = ('sprite' == assetType);
-spriteFeaturesFilter.visible = false; // disable features filter for now
+		spriteFeaturesFilter.visible = false; // disable features filter for now
 	}
 
 	private function filterChanged(filter:MediaFilter):void {
@@ -295,7 +295,7 @@ spriteFeaturesFilter.visible = false; // disable features filter for now
 		function gotLibraryData(data:ByteArray):void {
 			if (!data) return; // failure
 			var s:String = data.readUTFBytes(data.length);
-			libraryCache = util.JSON.parse(stripComments(s)) as Array;
+			libraryCache[assetType] = util.JSON.parse(stripComments(s)) as Array;
 			collectEntries();
 		}
 		function collectEntries():void {
@@ -443,7 +443,7 @@ spriteFeaturesFilter.visible = false; // disable features filter for now
 		}
 	}
 	
-	public function initSelected():void {//初始化选择_wh
+	public function initSelected():void {//初始化选择_xuhy
 		// Close dialog and call whenDone() with an array of selected media items.
 		var io:ProjectIO = new ProjectIO(app);
 		close();
@@ -685,7 +685,7 @@ spriteFeaturesFilter.visible = false; // disable features filter for now
 		} else { // try to read data as an MP3 file
 			if (app.lp) app.lp.setTitle('Converting mp3...');
 			var sound:Sound;
-			/*SCRATCH::allow3d _wh*/ {
+			/*SCRATCH::allow3d*/ {
 				sound = new Sound();
 				data.position = 0;
 				try {
