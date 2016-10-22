@@ -1190,6 +1190,9 @@ msgstr "庫"
 msgid "light"
 msgstr "光線"
 
+msgid "ultrasonic sensor"
+msgstr "超聲波測距"
+
 # 83%
 #, fuzzy
 msgid "lights"

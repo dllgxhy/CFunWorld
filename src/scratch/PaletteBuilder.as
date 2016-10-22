@@ -324,7 +324,7 @@ public class PaletteBuilder  extends Sprite {
 			'xpos', 'ypos', 'heading', 'costumeIndex', 'scale', 'volume', 'timeAndDate',
 			'backgroundIndex', 'sceneName', 'tempo', 'answer', 'timer', 'soundLevel', 'isLoud',
 			'sensor:', 'sensorPressed:', 'senseVideoMotion', 'xScroll', 'yScroll',
-			'getDistance', 'getTilt','readcksound','readckslide','readcklight','readckjoyx','readckjoyy','readckkey1','readckkey2'];//增加在舞台的变量显示，模块左边加小框_wh
+			'getDistance', 'getTilt','readcksound','readckslide','readckUltrasonicSensor','readcklight','readckjoyx','readckjoyy','readckkey1','readckkey2'];//增加在舞台的变量显示，模块左边加小框_wh
 		return checkboxReporters.indexOf(op) > -1;
 	}
 

@@ -1190,6 +1190,9 @@ msgstr "庫"
 msgid "light"
 msgstr "光線"
 
+msgid "ultrasonic sensor"
+msgstr "超聲波測距"
+
 # 83%
 #, fuzzy
 msgid "lights"
@@ -2247,6 +2250,9 @@ msgstr "反轉"
 
 msgid "set colors LED as R %n G %n B %n"
 msgstr "設置三色LED為 紅%n 綠%n 藍%n"
+
+msgid "set LCD1602 as %s"
+msgstr "設置LCD1602為  %s"
 
 msgid "read %m.dsensor sensor %m.dpin"
 msgstr "讀取 %m.dsensor 傳感器（數字） %m.dpin"

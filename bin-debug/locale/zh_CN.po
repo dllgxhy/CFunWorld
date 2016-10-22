@@ -1190,6 +1190,9 @@ msgstr "库"
 msgid "light"
 msgstr "光线"
 
+msgid "ultrasonic sensor"
+msgstr "超声波测距"
+
 # 83%
 #, fuzzy
 msgid "lights"
@@ -2251,6 +2254,9 @@ msgstr "反转"
 msgid "set colors LED as R %n G %n B %n"
 msgstr "设置三色LED为 红%n 绿%n 蓝%n"
 
+msgid "set LCD1602 as %s"
+msgstr "设置LCD1602为  %s"
+
 msgid "read %m.dsensor sensor %m.dpin"
 msgstr "读取 %m.dsensor 传感器（数字） %m.dpin"
 
@@ -2544,10 +2550,6 @@ msgstr "摇杆X轴"
 
 msgid "joystick Y"
 msgstr "摇杆Y轴"
-
-
-msgid "set LCD1602 as %s"
-msgstr "设置LCD1602显示的数据为："
 
 msgid "Pin "
 msgstr "管脚 "

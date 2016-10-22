@@ -127,7 +127,7 @@ import flash.utils.*;
 
 public class Scratch extends Sprite {
 	// Version
-	public static const versionString:String = 'v1.8';//版本号_wh
+	public static const versionString:String = 'v446';//版本号_wh
 	public static var app:Scratch; // static reference to the app, used for debugging
 
 	// Display modes
@@ -267,6 +267,7 @@ public class Scratch extends Sprite {
 	public var CKsound:Number = 0;//CK板变量值_wh
 	public var CKslide:Number = 0;//CK板变量值_wh
 	public var CKlight:Number = 0;//CK板变量值_wh
+
 	public var CKjoyx:Number = 0;//CK板变量值_wh
 	public var CKjoyy:Number = 0;//CK板变量值_wh
 	
@@ -610,13 +611,14 @@ public class Scratch extends Sprite {
 			case "readcksound":DialogBox.blockhelp("sound",Translator.map("Pin ") + "A3\n" + Translator.map("Range ") + "0-100", null, app.stage);break;
 			case "readckslide":DialogBox.blockhelp("slide",Translator.map("Pin ") + "A4\n" + Translator.map("Range ") + "0-100", null, app.stage);break;
 			case "readcklight":DialogBox.blockhelp("light",Translator.map("Pin ") + "A5\n" + Translator.map("Range ") + "0-100", null, app.stage);break;
+			case "readckUltrasonicSensor":DialogBox.blockhelp("UltrasonicSensor",Translator.map("Pin ") + "A5\n" + Translator.map("Range ") + "0-100", null, app.stage);break;
 			case "readckkey1":DialogBox.blockhelp("red key",Translator.map("Pin ") + "2", null, app.stage);break;
 			case "readckkey2":DialogBox.blockhelp("green key",Translator.map("Pin ") + "3", null, app.stage);break;
 			case "readckjoyx":DialogBox.blockhelp("joystick X",Translator.map("Pin ") + "A1\n" + Translator.map("Range ") + "-100-100", null, app.stage);break;
 			case "readckjoyy":DialogBox.blockhelp("joystick Y",Translator.map("Pin ") + "A2\n" + Translator.map("Range ") + "-100-100", null, app.stage);break;
 			case "setckled:":DialogBox.blockhelp("set LED as %m.onoff",Translator.map("Pin ") + "13", null, app.stage);break;
 			case "setrgb:":DialogBox.blockhelp("set colors LED as R %n G %n B %n",Translator.map("Pin ") + "9/10/11", null, app.stage);break;
-//			case "setlcd1602string:":DialogBox.blockhelp("set lcd1602 as %s,Translator.map("Pin ") + "9/10/11", null, app.stage);break;
+			case "setlcd1602string:":DialogBox.blockhelp("set lcd1602 as %s",Translator.map("Pin ") + "9/10/11", null, app.stage);break;
 			default:break;
 		}
 	}
