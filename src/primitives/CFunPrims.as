@@ -150,11 +150,20 @@ package primitives
 			primTable["readfraredR:"] = primReadByte;//读红外遥控输入_wh
 			primTable["readfraredRSend:"] = primReadFraredR;//读红外遥控输入_wh
 			
-			primTable["readcksound"] = primReadShort;//ck_wh
+			
+			primTable["readcksound"]			= function(b:*):* { return app.arduinoSoundValue};
+			primTable["readckslide"]	        = function(b:*):* { return app.arduinoSlideValue};
+			primTable["readcklight"]		    = function(b:*):* { return app.arduinoLightValue};
+			primTable["readckUltrasonicSensor"]	= function(b:*):* { return app.arduinoUltrasonicValue};
+			
+			
+			
+			
+			//primTable["readcksound"] = primReadShort;//ck_wh
 			primTable["readcksoundSend"] = primReadCkSo;//ck_wh
-			primTable["readckslide"] = primReadShort;//ck_wh
+			//primTable["readckslide"] = primReadShort;//ck_wh
 			primTable["readckslideSend"] = primReadCkSi;//ck_wh
-			primTable["readcklight"] = primReadShort;//ck_wh
+			//primTable["readcklight"] = primReadShort;//ck_wh
 			primTable["readcklightSend"] = primReadCkLi;//ck_wh
 			primTable["readckjoyx"] = primReadShort;//ck_wh
 			primTable["readckjoyxSend"] = primReadCkJX;//ck_wh

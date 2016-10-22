@@ -50,6 +50,14 @@ public class TopBarPart extends UIPart {
 
 	private var offlineNotice:TextField;
 	private const offlineNoticeFormat:TextFormat = new TextFormat(CSS.font, 13, CSS.white, true);
+	
+	
+	
+	public static  var UartAutoConnectX:int = 0x00;
+	public static  var UartAutoConnectY:int = 0x00;
+	
+	public static  var UartComIDTextX:int    = 0x00;
+	public static  var UartComIDTextY:int    = 0x00;
 
 	public function TopBarPart(app:Scratch) {
 		this.app = app;
@@ -74,7 +82,7 @@ public class TopBarPart extends UIPart {
 			Scratch.app.showMYMenu(Menu.dummyButton());//主菜单增加猫友汇项_wh
 			Scratch.app.showHelpMenu(Menu.dummyButton());//主菜单增加论坛链接项_wh
 		}
-		return ['File', 'Edit', 'COM','MYH','Forum/Help','Tips', 'Duplicate', 'Delete', 'Grow', 'Shrink', 'Block help', 'Offline Editor'];
+		return ['File', 'Edit', 'COM','MYH','Forum/Help','Tips', 'Duplicate', 'Delete', 'Grow', 'Shrink', 'Block help', 'Offline Editor','comID'];
 	}
 
 	protected function removeTextButtons():void {
@@ -135,6 +143,8 @@ public class TopBarPart extends UIPart {
 		helpMenu.y = buttonY;
 		nextX += helpMenu.width + buttonSpace;
 		
+		
+		
 		// cursor tool buttons
 		var space:int = 3;
 		copyTool.x = app.isOffline ? 493 : 427;
@@ -144,6 +154,12 @@ public class TopBarPart extends UIPart {
 		helpTool.x = shrinkTool.right() + space;
 		copyTool.y = cutTool.y = shrinkTool.y = growTool.y = helpTool.y = buttonY - 3;
 
+		UartAutoConnectX = helpTool.x + 10 * buttonSpace;
+		UartAutoConnectY = helpTool.y - 1;
+		
+		UartComIDTextX = UartAutoConnectX + 14 * buttonSpace;
+		UartComIDTextY = UartAutoConnectY + 5;
+		
 		if(offlineNotice) {
 			offlineNotice.x = w - offlineNotice.width - 5;
 			offlineNotice.y = 5;

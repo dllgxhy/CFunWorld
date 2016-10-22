@@ -75,8 +75,8 @@ public class MediaLibrary extends Sprite {
 	private var okayButton:Button;
 	private var cancelButton:Button;
 
-	private static var libraryCache:Array; // cache of all mediaLibrary entries
-
+	private static var libraryCache:Object = {}; // cache of all mediaLibrary entries
+//	private static var libraryCache:Object;
 	public function MediaLibrary(app:Scratch, type:String, whenDone:Function) {
 		this.app = app;
 		this.assetType = type;
@@ -292,9 +292,13 @@ public class MediaLibrary extends Sprite {
 	//------------------------------
 
 	private function viewLibrary():void {
+		app.xuhy_test_log("enter viewLibrary");
 		function gotLibraryData(data:ByteArray):void {
-			if (!data) return; // failure
+			if (!data) {
+				return; // failure
+			}			
 			var s:String = data.readUTFBytes(data.length);
+			app.xuhy_test_log(s);
 			libraryCache[assetType] = util.JSON.parse(stripComments(s)) as Array;
 			collectEntries();
 		}

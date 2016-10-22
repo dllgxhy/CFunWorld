@@ -115,6 +115,11 @@ import util.Transition;
 
 import watchers.ListWatcher;
 
+
+import flash.utils.getTimer;
+import flash.utils.Timer;
+import flash.utils.*;
+
 //网络外链_wh
 
 //import primitives.*;//输出testnum用_wh
@@ -191,6 +196,8 @@ public class Scratch extends Sprite {
 //	public var waitText:TextField=new TextField();//文本框_wh
 //	public var _lableAttribute:TextFormat;
 	public var connectCir:Shape = new Shape();//通信标志圆_wh
+	public var connectComIDText:TextField = new TextField();
+	
 	public var delay1sTimer:Timer;//定时器_wh
 	
 	public var ArduinoFlag:Boolean = false;//是否需要生成Arduino程序_wh
@@ -326,6 +333,7 @@ public class Scratch extends Sprite {
 		OS = Capabilities.os;//操作系统_wh
 		var OS32str:String = "C:/Windows/System32/";
 		var OS64str:String = "C:/Windows/SysWOW64/";
+		
 		var file2:File;
 		var file3:File;
 		try
@@ -427,7 +435,8 @@ public class Scratch extends Sprite {
 		stage.frameRate = 30;//渲染帧率_wh
 		stage.stageWidth = 1100;//增加软件窗口初始化设置，_wh
 		stage.stageHeight = 640;//增加软件窗口初始化设置，_wh
-
+	
+		
 		Block.setFonts(10, 9, true, 0);//初始化字体大小_wh；此处改没用，需要在更底层修改_wh 
 		Block.MenuHandlerFunction = BlockMenus.BlockMenuHandler;//右键、下拉等处理_wh
 		CursorTool.init(this);//光标_wh
@@ -505,9 +514,9 @@ public class Scratch extends Sprite {
 		if(b == 1)
 		{
 			connectCir.graphics.beginFill(0x80ff00);
-			connectCir.graphics.drawCircle(350,15,8);
-			connectCir.graphics.drawCircle(370,15,8);
-			connectCir.graphics.drawCircle(390,15,8);
+			connectCir.graphics.drawCircle(TopBarPart.UartAutoConnectX + 110,15,8);
+			connectCir.graphics.drawCircle(TopBarPart.UartAutoConnectX + 130,15,8);
+			connectCir.graphics.drawCircle(TopBarPart.UartAutoConnectX + 150,15,8);
 			connectCir.graphics.endFill();
 			addChild(connectCir);
 		}
@@ -516,9 +525,9 @@ public class Scratch extends Sprite {
 			if(b == 0)
 			{
 				connectCir.graphics.beginFill(0xff8060);
-				connectCir.graphics.drawCircle(350,15,8);
-				connectCir.graphics.drawCircle(370,15,8);
-				connectCir.graphics.drawCircle(390,15,8);
+				connectCir.graphics.drawCircle(TopBarPart.UartAutoConnectX + 110,15,8);
+				connectCir.graphics.drawCircle(TopBarPart.UartAutoConnectX + 130,15,8);
+				connectCir.graphics.drawCircle(TopBarPart.UartAutoConnectX + 150,15,8);
 				connectCir.graphics.endFill();
 				addChild(connectCir);
 			}
@@ -1256,7 +1265,7 @@ public class Scratch extends Sprite {
 	public function checkUART():Array
 	{
 		var comArray:Array = new Array();
-		for(var i:int =1;i<=16;i++)
+		for(var i:int =1;i<=32;i++)
 		{
 			{
 				arduino.close();//重新关闭_wh
@@ -1271,8 +1280,11 @@ public class Scratch extends Sprite {
 	}
 	
 	//串口数据接收事件处理_wh
+	public const uartDataID_checkUartAvail:int     = 0x01;
 	public function fncArduinoData(aEvt: ArduinoConnectorEvent):void
 	{
+		var paraDataBuffer:Array = new Array();
+		uartDetectStatustimerStop = getTimer();
 		try
 		{
 			comDataArrayOld = comDataArrayOld.concat(arduino.readBytesAsArray());//将接收到的数据放在comDataArrayOld数组中_wh
@@ -1289,6 +1301,33 @@ public class Scratch extends Sprite {
 			for(var i:int = 0; i < comDataArrayOld.length; i++)
 				comDataArray[i] = comDataArrayOld[i].charCodeAt(0);
 			//接收通信协议：0xee 0x66; 0xXX（类型）; 0xXX（编号）; 0xXX...（值）_wh
+			
+			if((comDataArray[0] == 0xfe) && (comDataArray[1] == 0xfd) && (comDataArray[comDataArray.length-2] == 0xfe) && (comDataArray[comDataArray.length-1] == 0xfb))//comDataArray中为ASCII码字符型，判断不等
+			{
+				if (comDataArray[2] == comDataArray.length)
+				{
+					switch(comDataArray[3])
+					{
+						case uartDataID_checkUartAvail:
+							for(var j:int = 0; j < comDataArrayOld.length-5; j++)
+							{
+								paraDataBuffer[j] = comDataArray[j+4];
+							}
+							paraUartData_OnTick(paraDataBuffer);
+							break;	
+						default:
+							break;
+					}
+					break;
+				}				
+				//数据左移一位_wh
+				if(comDataArray.length >= 2)
+					comDataArrayOld.shift();//数组整体前移一位_wh
+					//数据未接收全_wh
+				else
+					break;
+			}
+			
 			if((comDataArray[0] == 0xee) || (comDataArrayOld.length == 0))//comDataArray中为ASCII码字符型，判断不等？_wh
 			{
 				if(comDataArray[1] == 0x66)
@@ -1324,6 +1363,25 @@ public class Scratch extends Sprite {
 		}
 	}
 	
+	
+	public var arduinoLightValue:int      = 0x00;  //板载sensor数据
+	public var arduinoSlideValue:int      = 0x00;
+	public var arduinoSoundValue:int      = 0x00;
+	public var arduinoUltrasonicValue:int = 0x00;
+	
+	public function paraUartData_OnTick(data:Array):void
+	{		
+		for(var i:int = 0x00;i < data.length;i++)
+		{
+			if(isNaN(data[i]))
+			{
+				data[i] = 0;
+			}
+		}
+		arduinoLightValue = (data[0] * 256 + data[1])*100 >>10;		
+	}
+	
+	
 	//主菜单增加COM项_wh
 	public function showCOMMenu(b:*):void {
 		if(showCOMFlag)
@@ -1358,6 +1416,8 @@ public class Scratch extends Sprite {
 						case 'COM14':m.addItem(comArrays[i], comOpen14);break;//选中则开启_wh
 						case 'COM15':m.addItem(comArrays[i], comOpen15);break;//选中则开启_wh
 						case 'COM16':m.addItem(comArrays[i], comOpen16);break;//选中则开启_wh
+						case 'COM17':m.addItem(comArrays[i], comOpen17);break;//选中则开启_wh
+						case 'COM18':m.addItem(comArrays[i], comOpen18);break;//选中则开启_wh
 						default:break;
 					}
 				}
@@ -1591,6 +1651,7 @@ public class Scratch extends Sprite {
 	}
 	
 	//显示并打开选择的COM口
+	private const readoutFormat1:TextFormat = new TextFormat(CSS.font, 10, CSS.textColor);
 	protected function comOpen1():void {
 		//还没找到显示COM口打开的方法_wh
 		comTrue = true;//COM口开启标志量赋值_wh
@@ -1599,6 +1660,8 @@ public class Scratch extends Sprite {
 		arduino.addEventListener("socketData", fncArduinoData);//串口接收事件监测，在fncArduinoData函数中处理_wh
 		arduino.writeString('UART Open Success '+comIDTrue+'\n');//_wh
 		CFunConCir(1);
+		SetConnectComIDText(comIDTrue);
+		setAutoConnect();
 	}
 	protected function comOpen2():void {
 		comTrue = true;//COM口开启标志量赋值_wh
@@ -1607,6 +1670,8 @@ public class Scratch extends Sprite {
 		arduino.addEventListener("socketData", fncArduinoData);//串口接收事件监测，在fncArduinoData函数中处理_wh
 		arduino.writeString('UART Open Success '+comIDTrue+'\n');//_wh
 		CFunConCir(1);
+		SetConnectComIDText(comIDTrue);
+		setAutoConnect();
 	}
 	protected function comOpen3():void {
 		comTrue = true;//COM口开启标志量赋值_wh
@@ -1615,6 +1680,8 @@ public class Scratch extends Sprite {
 		arduino.addEventListener("socketData", fncArduinoData);//串口接收事件监测，在fncArduinoData函数中处理_wh
 		arduino.writeString('UART Open Success '+comIDTrue+'\n');//_wh
 		CFunConCir(1);
+		SetConnectComIDText(comIDTrue);
+		setAutoConnect();
 	}
 	protected function comOpen4():void {
 		comTrue = true;//COM口开启标志量赋值_wh
@@ -1623,6 +1690,8 @@ public class Scratch extends Sprite {
 		arduino.addEventListener("socketData", fncArduinoData);//串口接收事件监测，在fncArduinoData函数中处理_wh
 		arduino.writeString('UART Open Success '+comIDTrue+'\n');//_wh
 		CFunConCir(1);
+		SetConnectComIDText(comIDTrue);
+		setAutoConnect();
 	}
 	protected function comOpen5():void {
 		comTrue = true;//COM口开启标志量赋值_wh
@@ -1631,6 +1700,8 @@ public class Scratch extends Sprite {
 		arduino.addEventListener("socketData", fncArduinoData);//串口接收事件监测，在fncArduinoData函数中处理_wh
 		arduino.writeString('UART Open Success '+comIDTrue+'\n');//_wh
 		CFunConCir(1);
+		SetConnectComIDText(comIDTrue);
+		setAutoConnect();
 	}
 	protected function comOpen6():void {
 		comTrue = true;//COM口开启标志量赋值_wh
@@ -1639,6 +1710,8 @@ public class Scratch extends Sprite {
 		arduino.addEventListener("socketData", fncArduinoData);//串口接收事件监测，在fncArduinoData函数中处理_wh
 		arduino.writeString('UART Open Success '+comIDTrue+'\n');//_wh
 		CFunConCir(1);
+		SetConnectComIDText(comIDTrue);
+		setAutoConnect();
 	}
 	protected function comOpen7():void {
 		comTrue = true;//COM口开启标志量赋值_wh
@@ -1647,6 +1720,8 @@ public class Scratch extends Sprite {
 		arduino.addEventListener("socketData", fncArduinoData);//串口接收事件监测，在fncArduinoData函数中处理_wh
 		arduino.writeString('UART Open Success '+comIDTrue+'\n');//_wh
 		CFunConCir(1);
+		SetConnectComIDText(comIDTrue);
+		setAutoConnect();
 	}
 	protected function comOpen8():void {
 		comTrue = true;//COM口开启标志量赋值_wh
@@ -1655,6 +1730,8 @@ public class Scratch extends Sprite {
 		arduino.addEventListener("socketData", fncArduinoData);//串口接收事件监测，在fncArduinoData函数中处理_wh
 		arduino.writeString('UART Open Success '+comIDTrue+'\n');//_wh
 		CFunConCir(1);
+		SetConnectComIDText(comIDTrue);
+		setAutoConnect();
 	}
 	protected function comOpen9():void {
 		comTrue = true;//COM口开启标志量赋值_wh
@@ -1663,6 +1740,8 @@ public class Scratch extends Sprite {
 		arduino.addEventListener("socketData", fncArduinoData);//串口接收事件监测，在fncArduinoData函数中处理_wh
 		arduino.writeString('UART Open Success '+comIDTrue+'\n');//_wh
 		CFunConCir(1);
+		SetConnectComIDText(comIDTrue);
+		setAutoConnect();
 	}
 	protected function comOpen10():void {
 		comTrue = true;//COM口开启标志量赋值_wh
@@ -1671,6 +1750,8 @@ public class Scratch extends Sprite {
 		arduino.addEventListener("socketData", fncArduinoData);//串口接收事件监测，在fncArduinoData函数中处理_wh
 		arduino.writeString('UART Open Success '+comIDTrue+'\n');//_wh
 		CFunConCir(1);
+		SetConnectComIDText(comIDTrue);
+		setAutoConnect();
 	}
 	protected function comOpen11():void {
 		comTrue = true;//COM口开启标志量赋值_wh
@@ -1679,6 +1760,8 @@ public class Scratch extends Sprite {
 		arduino.addEventListener("socketData", fncArduinoData);//串口接收事件监测，在fncArduinoData函数中处理_wh
 		arduino.writeString('UART Open Success '+comIDTrue+'\n');//_wh
 		CFunConCir(1);
+		SetConnectComIDText(comIDTrue);
+		setAutoConnect();
 	}
 	protected function comOpen12():void {
 		comTrue = true;//COM口开启标志量赋值_wh
@@ -1687,6 +1770,8 @@ public class Scratch extends Sprite {
 		arduino.addEventListener("socketData", fncArduinoData);//串口接收事件监测，在fncArduinoData函数中处理_wh
 		arduino.writeString('UART Open Success '+comIDTrue+'\n');//_wh
 		CFunConCir(1);
+		SetConnectComIDText(comIDTrue);
+		setAutoConnect();
 	}
 	protected function comOpen13():void {
 		comTrue = true;//COM口开启标志量赋值_wh
@@ -1695,6 +1780,8 @@ public class Scratch extends Sprite {
 		arduino.addEventListener("socketData", fncArduinoData);//串口接收事件监测，在fncArduinoData函数中处理_wh
 		arduino.writeString('UART Open Success '+comIDTrue+'\n');//_wh
 		CFunConCir(1);
+		SetConnectComIDText(comIDTrue);
+		setAutoConnect();
 	}
 	protected function comOpen14():void {
 		comTrue = true;//COM口开启标志量赋值_wh
@@ -1703,6 +1790,8 @@ public class Scratch extends Sprite {
 		arduino.addEventListener("socketData", fncArduinoData);//串口接收事件监测，在fncArduinoData函数中处理_wh
 		arduino.writeString('UART Open Success '+comIDTrue+'\n');//_wh
 		CFunConCir(1);
+		SetConnectComIDText(comIDTrue);
+		setAutoConnect();
 	}
 	protected function comOpen15():void {
 		comTrue = true;//COM口开启标志量赋值_wh
@@ -1711,6 +1800,8 @@ public class Scratch extends Sprite {
 		arduino.addEventListener("socketData", fncArduinoData);//串口接收事件监测，在fncArduinoData函数中处理_wh
 		arduino.writeString('UART Open Success '+comIDTrue+'\n');//_wh
 		CFunConCir(1);
+		SetConnectComIDText(comIDTrue);
+		setAutoConnect();
 	}
 	protected function comOpen16():void {
 		comTrue = true;//COM口开启标志量赋值_wh
@@ -1719,17 +1810,225 @@ public class Scratch extends Sprite {
 		arduino.addEventListener("socketData", fncArduinoData);//串口接收事件监测，在fncArduinoData函数中处理_wh
 		arduino.writeString('UART Open Success '+comIDTrue+'\n');//_wh
 		CFunConCir(1);
+		SetConnectComIDText(comIDTrue);
+		setAutoConnect();
 	}
+	
+	protected function comOpen17():void {
+		comTrue = true;//COM口开启标志量赋值_wh
+		comIDTrue = 'COM17';
+		arduino.connect(comIDTrue,115200);
+		arduino.addEventListener("socketData", fncArduinoData);//串口接收事件监测，在fncArduinoData函数中处理_wh
+		arduino.writeString('UART Open Success '+comIDTrue+'\n');//_wh
+		CFunConCir(1);
+		SetConnectComIDText(comIDTrue);
+		setAutoConnect();
+	}
+	
+	protected function comOpen18():void {
+		comTrue = true;//COM口开启标志量赋值_wh
+		comIDTrue = 'COM18';
+		arduino.connect(comIDTrue,115200);
+		arduino.addEventListener("socketData", fncArduinoData);//串口接收事件监测，在fncArduinoData函数中处理_wh
+		arduino.writeString('UART Open Success '+comIDTrue+'\n');//_wh
+		CFunConCir(1);
+		SetConnectComIDText(comIDTrue);
+		setAutoConnect();
+	}
+	
+	protected function comOpen19():void {
+		comTrue = true;//COM口开启标志量赋值_wh
+		comIDTrue = 'COM19';
+		arduino.connect(comIDTrue,115200);
+		arduino.addEventListener("socketData", fncArduinoData);//串口接收事件监测，在fncArduinoData函数中处理_wh
+		arduino.writeString('UART Open Success '+comIDTrue+'\n');//_wh
+		CFunConCir(1);
+		SetConnectComIDText(comIDTrue);
+		setAutoConnect();
+	}
+	
+	protected function comOpen20():void {
+		comTrue = true;//COM口开启标志量赋值_wh
+		comIDTrue = 'COM20';
+		arduino.connect(comIDTrue,115200);
+		arduino.addEventListener("socketData", fncArduinoData);//串口接收事件监测，在fncArduinoData函数中处理_wh
+		arduino.writeString('UART Open Success '+comIDTrue+'\n');//_wh
+		CFunConCir(1);
+		SetConnectComIDText(comIDTrue);
+		setAutoConnect();
+	}
+	
+	protected function comOpen21():void {
+		comTrue = true;//COM口开启标志量赋值_wh
+		comIDTrue = 'COM21';
+		arduino.connect(comIDTrue,115200);
+		arduino.addEventListener("socketData", fncArduinoData);//串口接收事件监测，在fncArduinoData函数中处理_wh
+		arduino.writeString('UART Open Success '+comIDTrue+'\n');//_wh
+		CFunConCir(1);
+		SetConnectComIDText(comIDTrue);
+		setAutoConnect();
+	}
+	
+	protected function comOpen22():void {
+		comTrue = true;//COM口开启标志量赋值_wh
+		comIDTrue = 'COM22';
+		arduino.connect(comIDTrue,115200);
+		arduino.addEventListener("socketData", fncArduinoData);//串口接收事件监测，在fncArduinoData函数中处理_wh
+		arduino.writeString('UART Open Success '+comIDTrue+'\n');//_wh
+		CFunConCir(1);
+		SetConnectComIDText(comIDTrue);
+		setAutoConnect();
+	}
+	
+	protected function comOpen23():void {
+		comTrue = true;//COM口开启标志量赋值_wh
+		comIDTrue = 'COM23';
+		arduino.connect(comIDTrue,115200);
+		arduino.addEventListener("socketData", fncArduinoData);//串口接收事件监测，在fncArduinoData函数中处理_wh
+		arduino.writeString('UART Open Success '+comIDTrue+'\n');//_wh
+		CFunConCir(1);
+		SetConnectComIDText(comIDTrue);
+		setAutoConnect();
+	}
+	
+	protected function comOpen24():void {
+		comTrue = true;//COM口开启标志量赋值_wh
+		comIDTrue = 'COM24';
+		arduino.connect(comIDTrue,115200);
+		arduino.addEventListener("socketData", fncArduinoData);//串口接收事件监测，在fncArduinoData函数中处理_wh
+		arduino.writeString('UART Open Success '+comIDTrue+'\n');//_wh
+		CFunConCir(1);
+		SetConnectComIDText(comIDTrue);
+		setAutoConnect();
+	}
+	
+	protected function comOpen25():void {
+		comTrue = true;//COM口开启标志量赋值_wh
+		comIDTrue = 'COM25';
+		arduino.connect(comIDTrue,115200);
+		arduino.addEventListener("socketData", fncArduinoData);//串口接收事件监测，在fncArduinoData函数中处理_wh
+		arduino.writeString('UART Open Success '+comIDTrue+'\n');//_wh
+		CFunConCir(1);
+		SetConnectComIDText(comIDTrue);
+		setAutoConnect();
+	}
+	
+	protected function comOpen26():void {
+		comTrue = true;//COM口开启标志量赋值_wh
+		comIDTrue = 'COM26';
+		arduino.connect(comIDTrue,115200);
+		arduino.addEventListener("socketData", fncArduinoData);//串口接收事件监测，在fncArduinoData函数中处理_wh
+		arduino.writeString('UART Open Success '+comIDTrue+'\n');//_wh
+		CFunConCir(1);
+		SetConnectComIDText(comIDTrue);
+		setAutoConnect();
+	}
+	
+	protected function comOpen27():void {
+		comTrue = true;//COM口开启标志量赋值_wh
+		comIDTrue = 'COM27';
+		arduino.connect(comIDTrue,115200);
+		arduino.addEventListener("socketData", fncArduinoData);//串口接收事件监测，在fncArduinoData函数中处理_wh
+		arduino.writeString('UART Open Success '+comIDTrue+'\n');//_wh
+		CFunConCir(1);
+		SetConnectComIDText(comIDTrue);
+		setAutoConnect();
+	}
+	
+	protected function comOpen28():void {
+		comTrue = true;//COM口开启标志量赋值_wh
+		comIDTrue = 'COM28';
+		arduino.connect(comIDTrue,115200);
+		arduino.addEventListener("socketData", fncArduinoData);//串口接收事件监测，在fncArduinoData函数中处理_wh
+		arduino.writeString('UART Open Success '+comIDTrue+'\n');//_wh
+		CFunConCir(1);
+		SetConnectComIDText(comIDTrue);
+		setAutoConnect();
+	}
+	
+	
+	protected function comOpen29():void {
+		comTrue = true;//COM口开启标志量赋值_wh
+		comIDTrue = 'COM29';
+		arduino.connect(comIDTrue,115200);
+		arduino.addEventListener("socketData", fncArduinoData);//串口接收事件监测，在fncArduinoData函数中处理_wh
+		arduino.writeString('UART Open Success '+comIDTrue+'\n');//_wh
+		CFunConCir(1);
+		SetConnectComIDText(comIDTrue);
+		setAutoConnect();
+	}
+	
+	protected function comOpen30():void {
+		comTrue = true;//COM口开启标志量赋值_wh
+		comIDTrue = 'COM30';
+		arduino.connect(comIDTrue,115200);
+		arduino.addEventListener("socketData", fncArduinoData);//串口接收事件监测，在fncArduinoData函数中处理_wh
+		arduino.writeString('UART Open Success '+comIDTrue+'\n');//_wh
+		CFunConCir(1);
+		SetConnectComIDText(comIDTrue);
+		setAutoConnect();
+	}
+	
+	
+	protected function comOpen31():void {
+		comTrue = true;//COM口开启标志量赋值_wh
+		comIDTrue = 'COM31';
+		arduino.connect(comIDTrue,115200);
+		arduino.addEventListener("socketData", fncArduinoData);//串口接收事件监测，在fncArduinoData函数中处理_wh
+		arduino.writeString('UART Open Success '+comIDTrue+'\n');//_wh
+		CFunConCir(1);
+		SetConnectComIDText(comIDTrue);
+		setAutoConnect();
+	}
+	
+	protected function comOpen32():void {
+		comTrue = true;//COM口开启标志量赋值_wh
+		comIDTrue = 'COM32';
+		arduino.connect(comIDTrue,115200);
+		arduino.addEventListener("socketData", fncArduinoData);//串口接收事件监测，在fncArduinoData函数中处理_wh
+		arduino.writeString('UART Open Success '+comIDTrue+'\n');//_wh
+		CFunConCir(1);
+		SetConnectComIDText(comIDTrue);
+		setAutoConnect();
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	private function SetConnectComIDText(s:String):void{
+		connectComIDText.x = TopBarPart.UartComIDTextX;
+		connectComIDText.y = TopBarPart.UartComIDTextY;
+		connectComIDText.text = s;
+		connectComIDText.textColor =  CSS.white;
+		addChild(connectComIDText);
+	}
+	
+	private function RemoveConnectComIDText():void{
+		connectComIDText.x = TopBarPart.UartComIDTextX;
+		connectComIDText.y = TopBarPart.UartComIDTextY;
+		connectComIDText.text = ' ';
+		addChild(connectComIDText);
+	}
+	
 	
 	//显示并关闭选择的COM口
 	protected function comClose():void {
 		comTrue = false;//COM口开启标志量赋值_wh
 		arduino.writeString('UART Close '+comIDTrue+'\n');//_wh
-		arduino.flush();//清除缓存_wh
-		arduino.close();//关闭COM口_wh
-		//arduino.dispose();//释放_wh
-		//arduino = new ArduinoConnector();//COM重建_wh
+		arduino.flush();	//清除缓存_wh
+		arduino.close();	//关闭COM口_wh
 		CFunConCir(0);
+		clearInterval(IntervalID);
+		RemoveConnectComIDText();
 		readCDFlag = false;//通信丢失提示框标志清零_wh
 	}
 	
@@ -2161,5 +2460,69 @@ public class Scratch extends Sprite {
 
 	public function addExternalCallback(functionName:String, closure:Function):void {
 		throw new IllegalOperationError('Must override this function.');
+	}
+
+	
+	/********************************************************
+	xuhy 设计的log日志内容
+	********************************************************/
+	/*编写代码过程中的调试log，因trace占用时间较多，后续可直接对其关闭*/
+	public function xuhy_test_log(s:String,Level:int = 0):void
+	{
+		var WARRING:int = 0x01;
+		var Err:int     = 0x02;
+		switch(Level){
+			case 0x00:
+				trace("log :" + s);
+				break;
+			case WARRING:
+				trace("WARRING:" + s);
+				break;
+			case Err:
+				trace("Err:" + s);
+				break;
+			default :
+				break;
+		}
+	}
+	/***********************************************************
+	//通过串口检查心跳包
+	***********************************************************/
+	public var IntervalID:uint = 0x00; 				//查询UART是否工作正常定时器的ID号，可以用于清除定时器。
+	public function setAutoConnect():uint
+	{
+		var intervalDuration:Number = 1000;    
+		IntervalID = setInterval(onTick_searchAndCheckUart, intervalDuration);
+		uartDetectStatustimerStop = uartDetectStatustimerStart = 0x00;
+		app.xuhy_test_log("setAutoConnect " + comIDTrue);
+		return IntervalID;
+	}
+	
+	
+	private var uartDetectStatustimerStart:Number = 0x00;
+	private var uartDetectStatustimerStop:Number  = 0x00;
+	public  var  comStatus:int                    = 0x03;  				//com口的工作状态 0x00:连接正常 0x01:意外断开 0x02断开com口
+	private var  notConnectArduinoCount:int       = 0x00;
+	
+	public function onTick_searchAndCheckUart():void					//检测心跳包
+	{	
+		if (uartDetectStatustimerStop != uartDetectStatustimerStart)
+		{
+			comStatus = 0x00;
+			notConnectArduinoCount = 0x00;
+			app.xuhy_test_log("onTick_searchAndCheckUart com is --OK--");
+		}
+		else
+		{
+			notConnectArduinoCount ++ ;
+			if(notConnectArduinoCount >= 2)
+			{	
+				comStatus = 0x01;
+				notConnectArduinoCount = 0x00;
+				comClose();
+				app.xuhy_test_log("uart disconnect unexpected comStatus = " + comStatus);
+			}
+		}
+		uartDetectStatustimerStop = uartDetectStatustimerStart = getTimer();
 	}
 }}
