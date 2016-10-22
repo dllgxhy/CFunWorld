@@ -1285,6 +1285,14 @@ public class Scratch extends Sprite {
 	public const uartDataID_checkUartAvail:int     = 0x01;
 	public function fncArduinoData(aEvt: ArduinoConnectorEvent):void
 	{
+//		if(app.comCOMing == 0)
+//		{
+//			app.comCOMing = 0x01;
+//		}
+//		else
+//		{
+//			return ;
+//		}
 		var paraDataBuffer:Array = new Array();
 		uartDetectStatustimerStop = getTimer();
 		try
@@ -1295,7 +1303,9 @@ public class Scratch extends Sprite {
 		{
 			return;
 		}
-			
+		
+		app.comCOMing = 0x00;
+		
 		while(1)
 		{
 			comDataArray.length =0;
@@ -1308,17 +1318,13 @@ public class Scratch extends Sprite {
 			{
 				if (comDataArray[2] == comDataArray.length)
 				{
-					switch(comDataArray[3])
+					if(comDataArray[3] == uartDataID_checkUartAvail)
 					{
-						case uartDataID_checkUartAvail:
-							for(var j:int = 0; j < comDataArrayOld.length-5; j++)
-							{
-								paraDataBuffer[j] = comDataArray[j+4];
-							}
-							paraUartData_OnTick(paraDataBuffer);
-							break;	
-						default:
-							break;
+						for(var j:int = 0; j < comDataArrayOld.length-5; j++)
+						{
+							paraDataBuffer[j] = comDataArray[j+4];
+						}
+						paraUartData_OnTick(paraDataBuffer);
 					}
 					break;
 				}				
@@ -1380,7 +1386,14 @@ public class Scratch extends Sprite {
 				data[i] = 0;
 			}
 		}
-		arduinoLightValue = (data[0] * 256 + data[1])*100 >>10;		
+		arduinoSoundValue = (data[0] * 256 + data[1])*100 >>10;	
+		arduinoSlideValue = (data[2] * 256 + data[3])*100 >>10;	
+		arduinoLightValue = (data[4] * 256 + data[5])*100 >>10;	
+		
+//		arduinoLightValue = (data[6] * 256 + data[7])*100 >>10;	
+//		arduinoLightValue = (data[8] * 256 + data[9])*100 >>10;	
+		
+		arduinoUltrasonicValue = (data[10] <<24 + data[11] << 16 + data[12] << 8 +data[13])	
 	}
 	
 	
@@ -2512,6 +2525,7 @@ public class Scratch extends Sprite {
 		{
 			comStatus = 0x00;
 			notConnectArduinoCount = 0x00;
+			app.arduino.writeByte(0x00);
 			app.xuhy_test_log("onTick_searchAndCheckUart com is --OK--");
 		}
 		else

@@ -255,42 +255,42 @@ public class Interpreter {
 			{
 				if(app.ArduinoRPFlag == true)
 				{
-					app.ArduinoFs.writeUTFBytes('/* 少年创客 & 创趣天地 */' + '\n' + '/* YoungMaker & CFunWorld */' + '\n' + '/* www.youngmaker.com */' + '\n' + '/* www.cfunworld.com */' + '\n');
-//					app.ArduinoFs.writeUTFBytes('#include <Wire.h>' + '\n');
-					app.ArduinoFs.writeUTFBytes('#include "CFunPort.h"' + '\n');
+					app.ArduinoFs.writeUTFBytes('/* 少年创客  */' + '\n' + '/* YoungMaker */' + '\n' + '/* www.youngmaker.com */' + '\n' + '\n');
+					app.ArduinoFs.writeUTFBytes('#include "YoungMakerPort.h"' + '\n');
 					
 					if(app.ArduinoLCD1602)
 					{
-						app.ArduinoFs.writeUTFBytes('#include "CFunLiquidCrystal.h" ' + '\n');
-						app.ArduinoFs.writeUTFBytes('CFunLiquidCrystal lcd(0x20, 16, 2);' + '\n');	
+						app.ArduinoFs.writeUTFBytes('#include "YoungMakerCrystal.h" ' + '\n');
+						app.ArduinoFs.writeUTFBytes('#include <Wire.h>' + '\n');
+						app.ArduinoFs.writeUTFBytes('YoungMakerCrystal lcd(0x20, 16, 2);' + '\n');	
 					}
 					else
 					{
-						app.ArduinoFs.writeUTFBytes('#include <Wire.h>' + '\n');
+//						app.ArduinoFs.writeUTFBytes('#include <Wire.h>' + '\n');
 					}				
 						
 					if(app.ArduinoUs)
-						app.ArduinoFs.writeUTFBytes('#include "CFunUltrasonic.h" ' + '\n');
+						app.ArduinoFs.writeUTFBytes('#include "YoungMakerUltrasonic.h" ' + '\n');
 					if(app.ArduinoSeg)
-						app.ArduinoFs.writeUTFBytes('#include "CFun7SegmentDisplay.h" ' + '\n');
+						app.ArduinoFs.writeUTFBytes('#include "YoungMaker7SegmentDisplay" ' + '\n');
 					if(app.ArduinoRGB)
-						app.ArduinoFs.writeUTFBytes('#include "CFunRGBLed.h" ' + '\n');	
+						app.ArduinoFs.writeUTFBytes('#include "YoungMakerRGBLed.h" ' + '\n');	
 					if(app.ArduinoBuz)
-						app.ArduinoFs.writeUTFBytes('#include "CFunBuzzer.h" ' + '\n');
+						app.ArduinoFs.writeUTFBytes('#include "YoungMakerBuzzer.h" ' + '\n');
 					if(app.ArduinoCap)
-						app.ArduinoFs.writeUTFBytes('#include "CFunreadCapacitive.h" ' + '\n');
+						app.ArduinoFs.writeUTFBytes('#include "YoungMakerCapacitive.h" ' + '\n');
 					if(app.ArduinoDCM)
-						app.ArduinoFs.writeUTFBytes('#include "CFunDCMotor.h" ' + '\n');
+						app.ArduinoFs.writeUTFBytes('#include "YoungMakerDCMotor.h" ' + '\n');
 					if(app.ArduinoSer)
 						app.ArduinoFs.writeUTFBytes('#include "Servo.h" ' + '\n');
 					if(app.ArduinoIR)
-						app.ArduinoFs.writeUTFBytes('#include "CFunIR.h" ' + '\n');
+						app.ArduinoFs.writeUTFBytes('#include "YoungMakerIR.h" ' + '\n');
 					if(app.ArduinoTem)
-						app.ArduinoFs.writeUTFBytes('#include "CFunTemperature.h" ' + '\n');
+						app.ArduinoFs.writeUTFBytes('#include "YoungMakerTemperature.h" ' + '\n');
 					if(app.ArduinoAvo)
-						app.ArduinoFs.writeUTFBytes('#include "CFunAvoid.h" ' + '\n');
+						app.ArduinoFs.writeUTFBytes('#include "YoungMakerAvoid.h" ' + '\n');
 					if(app.ArduinoTra)
-						app.ArduinoFs.writeUTFBytes('#include "CFunTrack.h" ' + '\n');
+						app.ArduinoFs.writeUTFBytes('#include "YoungMakerTrack.h" ' + '\n');
 					
 					app.ArduinoHeadFs.open(app.ArduinoHeadFile,FileMode.READ);
 					app.ArduinoHeadFs.position = 0;
@@ -319,12 +319,12 @@ public class Interpreter {
 					app.ArduinoFs.writeUTFBytes("}"+'\n');
 					
 					//超声波中断处理函数
-					if(app.ArduinoUs)
-						app.ArduinoFs.writeUTFBytes('\n' + 'void ius(){' +'\n'
-													+ '_iustime = micros()-_itime;' +'\n'
-													+ 'noInterrupts();' +'\n'
-													+ '}'
-													+'\n');
+					//if(app.ArduinoUs)
+					//	app.ArduinoFs.writeUTFBytes('\n' + 'void ius(){' +'\n'
+					//								+ '_iustime = micros()-_itime;' +'\n'
+					//								+ 'noInterrupts();' +'\n'
+					//								+ '}'
+					//								+'\n');
 				}
 				
 				app.ArduinoHeadFs.close();
@@ -979,206 +979,7 @@ public class Interpreter {
 						return;
 					}
 					break;
-				case "readcksound":
-					if(app.comCOMing == 0)//当前没有线程占用串口通信_wh
-					{
-						app.comCOMing = 1;//串口被某一线程占用_wh
-						//发送一次读取指令_wh
-						//if(activeThread.comWaitNum == 0)
-						{
-							activeThread.comATCOMing = 1;//该线程占用串口通信_wh
-							activeThread.ArduinoNA = false;
-							b.opFunction = primTable["readcksoundSend"];app.comRevFlag = false;b.opFunction(b);
-							activeThread.startT = getTimer();
-						}
-					}
-					if(activeThread.comATCOMing == 1)//该线程占用串口通信_wh)
-					{
-						activeThread.comWaitNum++;
-						
-						if((getTimer() - activeThread.startT) >= lostTime)//长时间无回复，跳出等待_wh
-						{
-							activeThread.comWaitNum = 0;//解析完重新附0_wh
-							app.comRevFlag = false;//解析完后重新赋假_wh
-							app.comCOMing = 0;
-							activeThread.comATCOMing = 0;activeThread.ArduinoNA = false;
-							if(app.readCDFlag == false)
-							{
-								app.CFunConCir(2);//DialogBox.warnconfirm(Translator.map("communication problem"),Translator.map("please check communication"), null, app.stage);
-								app.readCDFlag = true;
-							}
-							return 0;
-						}
-						
-						//判断数据是否接收到，无则继续间接等待_wh
-						if(app.comRevFlag == false)
-						{
-							doYield();
-						}
-						
-						if(activeThread.comWaitNum)
-						{
-							if(app.comRevFlag)
-							{
-								activeThread.comWaitNum = 0;//解析完重新附0_wh
-								app.comRevFlag = false;//解析完后重新赋假_wh
-								app.comCOMing = 0;
-								activeThread.comATCOMing = 0;activeThread.ArduinoNA = false;
-								b.opFunction = primTable[op];//指向函数改成接收数据函数_wh
-								app.CKsound = (int)(b.opFunction(b)/5);
-								if(app.CKsound > 100)
-									app.CKsound = 100;
-								return app.CKsound;
-							}
-							else
-							{
-								activeThread.ArduinoNA = true;
-								return;
-							}
-						}
-					}
-					else
-					{
-//						activeThread.comWaitNum = 1;
-						doYield();
-						activeThread.ArduinoNA = true;
-//						app.comCOMing = 1;
-//						activeThread.comATCOMing = 1;
-						return;
-					}
-					break;
-				case "readcklight":
-					if(app.comCOMing == 0)//当前没有线程占用串口通信_wh
-					{
-						app.comCOMing = 1;//串口被某一线程占用_wh
-						//发送一次读取指令_wh
-						//if(activeThread.comWaitNum == 0)
-						{
-							activeThread.comATCOMing = 1;//该线程占用串口通信_wh
-							activeThread.ArduinoNA = false;
-							b.opFunction = primTable["readcklightSend"];app.comRevFlag = false;b.opFunction(b);
-							activeThread.startT = getTimer();
-						}
-					}
-					if(activeThread.comATCOMing == 1)//该线程占用串口通信_wh)
-					{
-						activeThread.comWaitNum++;
-						
-						if((getTimer() - activeThread.startT) >= lostTime)//长时间无回复，跳出等待_wh
-						{
-							activeThread.comWaitNum = 0;//解析完重新附0_wh
-							app.comRevFlag = false;//解析完后重新赋假_wh
-							app.comCOMing = 0;
-							activeThread.comATCOMing = 0;activeThread.ArduinoNA = false;
-							if(app.readCDFlag == false)
-							{
-								app.CFunConCir(2);//DialogBox.warnconfirm(Translator.map("communication problem"),Translator.map("please check communication"), null, app.stage);
-								app.readCDFlag = true;
-							}
-							return 0;
-						}
-						
-						//判断数据是否接收到，无则继续间接等待_wh
-						if(app.comRevFlag == false)
-						{
-							doYield();
-						}
-						
-						if(activeThread.comWaitNum)
-						{
-							if(app.comRevFlag)
-							{
-								activeThread.comWaitNum = 0;//解析完重新附0_wh
-								app.comRevFlag = false;//解析完后重新赋假_wh
-								app.comCOMing = 0;
-								activeThread.comATCOMing = 0;activeThread.ArduinoNA = false;
-								b.opFunction = primTable[op];//指向函数改成接收数据函数_wh
-								app.CKlight = (int)(b.opFunction(b)*100/1023);
-								return app.CKlight;
-							}
-							else
-							{
-								activeThread.ArduinoNA = true;
-								return;
-							}
-						}
-					}
-					else
-					{
-//						activeThread.comWaitNum = 1;
-						doYield();
-						activeThread.ArduinoNA = true;
-//						app.comCOMing = 1;
-//						activeThread.comATCOMing = 1;
-						return;
-					}
-					break;
-				case "readckslide":
-					if(app.comCOMing == 0)//当前没有线程占用串口通信_wh
-					{
-						app.comCOMing = 1;//串口被某一线程占用_wh
-						//发送一次读取指令_wh
-						//if(activeThread.comWaitNum == 0)
-						{
-							activeThread.comATCOMing = 1;//该线程占用串口通信_wh
-							activeThread.ArduinoNA = false;
-							b.opFunction = primTable["readckslideSend"];app.comRevFlag = false;b.opFunction(b);
-							activeThread.startT = getTimer();
-						}
-					}
-					if(activeThread.comATCOMing == 1)//该线程占用串口通信_wh)
-					{
-						activeThread.comWaitNum++;
-						
-						if((getTimer() - activeThread.startT) >= lostTime)//长时间无回复，跳出等待_wh
-						{
-							activeThread.comWaitNum = 0;//解析完重新附0_wh
-							app.comRevFlag = false;//解析完后重新赋假_wh
-							app.comCOMing = 0;
-							activeThread.comATCOMing = 0;activeThread.ArduinoNA = false;
-							if(app.readCDFlag == false)
-							{
-								app.CFunConCir(2);//DialogBox.warnconfirm(Translator.map("communication problem"),Translator.map("please check communication"), null, app.stage);
-								app.readCDFlag = true;
-							}
-							return 0;
-						}
-						
-						//判断数据是否接收到，无则继续间接等待_wh
-						if(app.comRevFlag == false)
-						{
-							doYield();
-						}
-						
-						if(activeThread.comWaitNum)
-						{
-							if(app.comRevFlag)
-							{
-								activeThread.comWaitNum = 0;//解析完重新附0_wh
-								app.comRevFlag = false;//解析完后重新赋假_wh
-								app.comCOMing = 0;
-								activeThread.comATCOMing = 0;activeThread.ArduinoNA = false;
-								b.opFunction = primTable[op];//指向函数改成接收数据函数_wh
-								app.CKslide = (int)(b.opFunction(b)*100/1023);
-								return app.CKslide;
-							}
-							else
-							{
-								activeThread.ArduinoNA = true;
-								return;
-							}
-						}
-					}
-					else
-					{
-//						activeThread.comWaitNum = 1;
-						doYield();
-						activeThread.ArduinoNA = true;
-//						app.comCOMing = 1;
-//						activeThread.comATCOMing = 1;
-						return;
-					}
-					break;
+
 				case "readckjoyx":
 					if(app.comCOMing == 0)//当前没有线程占用串口通信_wh
 					{

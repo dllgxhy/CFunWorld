@@ -33,6 +33,7 @@ package primitives
 	import flash.utils.Dictionary;
 	import flash.utils.Timer;
 	import flash.utils.getTimer;
+	import flash.utils.*;
 	
 	import blocks.Block;
 	
@@ -156,15 +157,6 @@ package primitives
 			primTable["readcklight"]		    = function(b:*):* { return app.arduinoLightValue};
 			primTable["readckUltrasonicSensor"]	= function(b:*):* { return app.arduinoUltrasonicValue};
 			
-			
-			
-			
-			//primTable["readcksound"] = primReadShort;//ck_wh
-			primTable["readcksoundSend"] = primReadCkSo;//ck_wh
-			//primTable["readckslide"] = primReadShort;//ck_wh
-			primTable["readckslideSend"] = primReadCkSi;//ck_wh
-			//primTable["readcklight"] = primReadShort;//ck_wh
-			primTable["readcklightSend"] = primReadCkLi;//ck_wh
 			primTable["readckjoyx"] = primReadShort;//ck_wh
 			primTable["readckjoyxSend"] = primReadCkJX;//ck_wh
 			primTable["readckjoyy"] = primReadShort;//ck_wh
@@ -188,6 +180,7 @@ package primitives
 		//Arduino程序头_wh
 		private function primArduino(b:Block):void
 		{	
+			clearInterval(app.IntervalID);
 			app.ArduinoLoopFlag = false;
 			app.ArduinoBracketFlag = 0;
 			app.ArduinoMathFlag = false;
@@ -316,7 +309,7 @@ package primitives
 				app.arduino.writeByte(0x00);
 				app.arduino.writeByte(0x00);
 				app.arduino.writeByte(hl);
-				app.CFunDelayms(5);//延时15ms_wh
+				app.CFunDelayms(10);//延时15ms_wh
 			}
 		}
 		
@@ -703,7 +696,7 @@ package primitives
 		//写机器人灰度阀值_wh
 		private function primSetgray(b:Block):void
 		{
-			var gray:Number = interp.arg(b,0);
+/*			var gray:Number = interp.arg(b,0);
 			
 			if(app.ArduinoFlag == true)//判断是否为Arduino语句生成过程_wh
 			{
@@ -760,7 +753,7 @@ package primitives
 				app.arduino.writeByte(gray>>8);
 				app.arduino.writeByte(gray);
 				app.CFunDelayms(5);//延时15ms_wh
-			}
+			}*/
 		}
 		
 		//写机器人蜂鸣器输出_wh
