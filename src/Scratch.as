@@ -1632,6 +1632,7 @@ public class Scratch extends Sprite {
 					delay1sTimer.reset();
 					cmdBackNum = 0;
 					app.ArduinoRPFlag = false;
+					setAutoConnect();
 				}
 			}
 			else
@@ -1655,6 +1656,7 @@ public class Scratch extends Sprite {
 								arduino.connect(comIDTrue,115200);//重新开启串口_wh
 								delay1sTimer.reset();
 								cmdBackNum = 0;
+								setAutoConnect();
 							}
 						}
 					}
@@ -1674,7 +1676,6 @@ public class Scratch extends Sprite {
 		arduino.connect(comIDTrue,115200);
 		arduino.addEventListener("socketData", fncArduinoData);//串口接收事件监测，在fncArduinoData函数中处理_wh
 		arduino.writeString('UART Open Success '+comIDTrue+'\n');//_wh
-		CFunConCir(1);
 		SetConnectComIDText(comIDTrue);
 		setAutoConnect();
 	}
@@ -1684,7 +1685,6 @@ public class Scratch extends Sprite {
 		arduino.connect(comIDTrue,115200);
 		arduino.addEventListener("socketData", fncArduinoData);//串口接收事件监测，在fncArduinoData函数中处理_wh
 		arduino.writeString('UART Open Success '+comIDTrue+'\n');//_wh
-		CFunConCir(1);
 		SetConnectComIDText(comIDTrue);
 		setAutoConnect();
 	}
@@ -1694,7 +1694,6 @@ public class Scratch extends Sprite {
 		arduino.connect(comIDTrue,115200);
 		arduino.addEventListener("socketData", fncArduinoData);//串口接收事件监测，在fncArduinoData函数中处理_wh
 		arduino.writeString('UART Open Success '+comIDTrue+'\n');//_wh
-		CFunConCir(1);
 		SetConnectComIDText(comIDTrue);
 		setAutoConnect();
 	}
@@ -1704,7 +1703,6 @@ public class Scratch extends Sprite {
 		arduino.connect(comIDTrue,115200);
 		arduino.addEventListener("socketData", fncArduinoData);//串口接收事件监测，在fncArduinoData函数中处理_wh
 		arduino.writeString('UART Open Success '+comIDTrue+'\n');//_wh
-		CFunConCir(1);
 		SetConnectComIDText(comIDTrue);
 		setAutoConnect();
 	}
@@ -1714,7 +1712,6 @@ public class Scratch extends Sprite {
 		arduino.connect(comIDTrue,115200);
 		arduino.addEventListener("socketData", fncArduinoData);//串口接收事件监测，在fncArduinoData函数中处理_wh
 		arduino.writeString('UART Open Success '+comIDTrue+'\n');//_wh
-		CFunConCir(1);
 		SetConnectComIDText(comIDTrue);
 		setAutoConnect();
 	}
@@ -1724,7 +1721,6 @@ public class Scratch extends Sprite {
 		arduino.connect(comIDTrue,115200);
 		arduino.addEventListener("socketData", fncArduinoData);//串口接收事件监测，在fncArduinoData函数中处理_wh
 		arduino.writeString('UART Open Success '+comIDTrue+'\n');//_wh
-		CFunConCir(1);
 		SetConnectComIDText(comIDTrue);
 		setAutoConnect();
 	}
@@ -1734,7 +1730,6 @@ public class Scratch extends Sprite {
 		arduino.connect(comIDTrue,115200);
 		arduino.addEventListener("socketData", fncArduinoData);//串口接收事件监测，在fncArduinoData函数中处理_wh
 		arduino.writeString('UART Open Success '+comIDTrue+'\n');//_wh
-		CFunConCir(1);
 		SetConnectComIDText(comIDTrue);
 		setAutoConnect();
 	}
@@ -1744,7 +1739,6 @@ public class Scratch extends Sprite {
 		arduino.connect(comIDTrue,115200);
 		arduino.addEventListener("socketData", fncArduinoData);//串口接收事件监测，在fncArduinoData函数中处理_wh
 		arduino.writeString('UART Open Success '+comIDTrue+'\n');//_wh
-		CFunConCir(1);
 		SetConnectComIDText(comIDTrue);
 		setAutoConnect();
 	}
@@ -1754,7 +1748,6 @@ public class Scratch extends Sprite {
 		arduino.connect(comIDTrue,115200);
 		arduino.addEventListener("socketData", fncArduinoData);//串口接收事件监测，在fncArduinoData函数中处理_wh
 		arduino.writeString('UART Open Success '+comIDTrue+'\n');//_wh
-		CFunConCir(1);
 		SetConnectComIDText(comIDTrue);
 		setAutoConnect();
 	}
@@ -1764,7 +1757,6 @@ public class Scratch extends Sprite {
 		arduino.connect(comIDTrue,115200);
 		arduino.addEventListener("socketData", fncArduinoData);//串口接收事件监测，在fncArduinoData函数中处理_wh
 		arduino.writeString('UART Open Success '+comIDTrue+'\n');//_wh
-		CFunConCir(1);
 		SetConnectComIDText(comIDTrue);
 		setAutoConnect();
 	}
@@ -1774,7 +1766,6 @@ public class Scratch extends Sprite {
 		arduino.connect(comIDTrue,115200);
 		arduino.addEventListener("socketData", fncArduinoData);//串口接收事件监测，在fncArduinoData函数中处理_wh
 		arduino.writeString('UART Open Success '+comIDTrue+'\n');//_wh
-		CFunConCir(1);
 		SetConnectComIDText(comIDTrue);
 		setAutoConnect();
 	}
@@ -1784,7 +1775,6 @@ public class Scratch extends Sprite {
 		arduino.connect(comIDTrue,115200);
 		arduino.addEventListener("socketData", fncArduinoData);//串口接收事件监测，在fncArduinoData函数中处理_wh
 		arduino.writeString('UART Open Success '+comIDTrue+'\n');//_wh
-		CFunConCir(1);
 		SetConnectComIDText(comIDTrue);
 		setAutoConnect();
 	}
@@ -1794,7 +1784,6 @@ public class Scratch extends Sprite {
 		arduino.connect(comIDTrue,115200);
 		arduino.addEventListener("socketData", fncArduinoData);//串口接收事件监测，在fncArduinoData函数中处理_wh
 		arduino.writeString('UART Open Success '+comIDTrue+'\n');//_wh
-		CFunConCir(1);
 		SetConnectComIDText(comIDTrue);
 		setAutoConnect();
 	}
@@ -1804,7 +1793,6 @@ public class Scratch extends Sprite {
 		arduino.connect(comIDTrue,115200);
 		arduino.addEventListener("socketData", fncArduinoData);//串口接收事件监测，在fncArduinoData函数中处理_wh
 		arduino.writeString('UART Open Success '+comIDTrue+'\n');//_wh
-		CFunConCir(1);
 		SetConnectComIDText(comIDTrue);
 		setAutoConnect();
 	}
@@ -1814,7 +1802,6 @@ public class Scratch extends Sprite {
 		arduino.connect(comIDTrue,115200);
 		arduino.addEventListener("socketData", fncArduinoData);//串口接收事件监测，在fncArduinoData函数中处理_wh
 		arduino.writeString('UART Open Success '+comIDTrue+'\n');//_wh
-		CFunConCir(1);
 		SetConnectComIDText(comIDTrue);
 		setAutoConnect();
 	}
@@ -1824,7 +1811,6 @@ public class Scratch extends Sprite {
 		arduino.connect(comIDTrue,115200);
 		arduino.addEventListener("socketData", fncArduinoData);//串口接收事件监测，在fncArduinoData函数中处理_wh
 		arduino.writeString('UART Open Success '+comIDTrue+'\n');//_wh
-		CFunConCir(1);
 		SetConnectComIDText(comIDTrue);
 		setAutoConnect();
 	}
@@ -1835,7 +1821,6 @@ public class Scratch extends Sprite {
 		arduino.connect(comIDTrue,115200);
 		arduino.addEventListener("socketData", fncArduinoData);//串口接收事件监测，在fncArduinoData函数中处理_wh
 		arduino.writeString('UART Open Success '+comIDTrue+'\n');//_wh
-		CFunConCir(1);
 		SetConnectComIDText(comIDTrue);
 		setAutoConnect();
 	}
@@ -1846,7 +1831,6 @@ public class Scratch extends Sprite {
 		arduino.connect(comIDTrue,115200);
 		arduino.addEventListener("socketData", fncArduinoData);//串口接收事件监测，在fncArduinoData函数中处理_wh
 		arduino.writeString('UART Open Success '+comIDTrue+'\n');//_wh
-		CFunConCir(1);
 		SetConnectComIDText(comIDTrue);
 		setAutoConnect();
 	}
@@ -2526,6 +2510,7 @@ public class Scratch extends Sprite {
 			comStatus = 0x00;
 			notConnectArduinoCount = 0x00;
 			app.arduino.writeByte(0x00);
+			CFunConCir(1);
 			app.xuhy_test_log("onTick_searchAndCheckUart com is --OK--");
 		}
 		else
@@ -2535,7 +2520,8 @@ public class Scratch extends Sprite {
 			{	
 				comStatus = 0x01;
 				notConnectArduinoCount = 0x00;
-				comClose();
+				CFunConCir(0);
+				clearInterval(IntervalID);
 				app.xuhy_test_log("uart disconnect unexpected comStatus = " + comStatus);
 			}
 		}
