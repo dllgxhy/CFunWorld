@@ -281,6 +281,7 @@ public class Scratch extends Sprite {
 	public var test:Number = 0;//测试量_wh
 	
 	public var showCOMFlag:Boolean = false;//COM口正在连接_wh
+	public var IntervalID:uint = 0x00; 				//查询UART是否工作正常定时器的ID号，可以用于清除定时器。
 	
 	/*************************************************************************************************/
 	public var debugwh:Boolean = false;//是否为debug模式（应用文件路径读取无法在debug模式上通过）_wh
@@ -1517,7 +1518,9 @@ public class Scratch extends Sprite {
 	protected function dofirm():void {
 		//烧入固件前先判断串口，未打开则之间退出，打开则先关闭（否则串口被占用）_wh
 		if(comTrue)
+		{
 			arduino.close();
+		}
 		else
 		{
 			DialogBox.warnconfirm(Translator.map("error about firmware"),Translator.map("please open the COM"), null, app.stage);//软件界面中部显示提示框_wh
@@ -2027,6 +2030,7 @@ public class Scratch extends Sprite {
 		arduino.close();	//关闭COM口_wh
 		CFunConCir(0);
 		clearInterval(IntervalID);
+		IntervalID = 0x00;
 		RemoveConnectComIDText();
 		readCDFlag = false;//通信丢失提示框标志清零_wh
 	}
@@ -2487,10 +2491,11 @@ public class Scratch extends Sprite {
 	/***********************************************************
 	//通过串口检查心跳包
 	***********************************************************/
-	public var IntervalID:uint = 0x00; 				//查询UART是否工作正常定时器的ID号，可以用于清除定时器。
+	
 	public function setAutoConnect():uint
 	{
-		var intervalDuration:Number = 1000;    
+		var intervalDuration:Number = 1000;  
+		clearInterval(IntervalID);
 		IntervalID = setInterval(onTick_searchAndCheckUart, intervalDuration);
 		uartDetectStatustimerStop = uartDetectStatustimerStart = 0x00;
 		app.xuhy_test_log("setAutoConnect " + comIDTrue);
@@ -2516,13 +2521,15 @@ public class Scratch extends Sprite {
 		else
 		{
 			notConnectArduinoCount ++ ;
-			if(notConnectArduinoCount >= 2)
+			if(notConnectArduinoCount >= 3)
 			{	
+				app.xuhy_test_log("uart disconnect unexpected comStatus = " + comStatus + ";IntervalID = " + IntervalID);
+				clearInterval(IntervalID);
+				IntervalID = 0x00;
 				comStatus = 0x01;
 				notConnectArduinoCount = 0x00;
 				CFunConCir(0);
-				clearInterval(IntervalID);
-				app.xuhy_test_log("uart disconnect unexpected comStatus = " + comStatus);
+				
 			}
 		}
 		uartDetectStatustimerStop = uartDetectStatustimerStart = getTimer();
