@@ -1295,7 +1295,7 @@ public class Scratch extends Sprite {
 //			return ;
 //		}
 		var paraDataBuffer:Array = new Array();
-		uartDetectStatustimerStop = getTimer();
+		uartDetectStatustimerStop = 0x01;
 		try
 		{
 			comDataArrayOld = comDataArrayOld.concat(arduino.readBytesAsArray());//将接收到的数据放在comDataArrayOld数组中_wh
@@ -2032,6 +2032,7 @@ public class Scratch extends Sprite {
 		clearInterval(IntervalID);
 		IntervalID = 0x00;
 		RemoveConnectComIDText();
+		CFunConCir_Flag = false;
 		readCDFlag = false;//通信丢失提示框标志清零_wh
 	}
 	
@@ -2495,10 +2496,14 @@ public class Scratch extends Sprite {
 	public function setAutoConnect():uint
 	{
 		var intervalDuration:Number = 1000;  
-		clearInterval(IntervalID);
+		for(IntervalID; IntervalID>0x00;IntervalID-- )
+		{
+			clearInterval(IntervalID);
+		}
+		
 		IntervalID = setInterval(onTick_searchAndCheckUart, intervalDuration);
 		uartDetectStatustimerStop = uartDetectStatustimerStart = 0x00;
-		app.xuhy_test_log("setAutoConnect " + comIDTrue);
+		app.xuhy_test_log("setAutoConnect " + comIDTrue  + " ; IntervalID = " + IntervalID);
 		return IntervalID;
 	}
 	
@@ -2507,15 +2512,21 @@ public class Scratch extends Sprite {
 	private var uartDetectStatustimerStop:Number  = 0x00;
 	public  var  comStatus:int                    = 0x03;  				//com口的工作状态 0x00:连接正常 0x01:意外断开 0x02断开com口
 	private var  notConnectArduinoCount:int       = 0x00;
+	private var CFunConCir_Flag:Boolean           = false;
 	
 	public function onTick_searchAndCheckUart():void					//检测心跳包
 	{	
 		if (uartDetectStatustimerStop != uartDetectStatustimerStart)
 		{
 			comStatus = 0x00;
+			uartDetectStatustimerStop = 0x00;
 			notConnectArduinoCount = 0x00;
-			app.arduino.writeByte(0x00);
-			CFunConCir(1);
+//			app.arduino.writeByte(0x00);
+			if(CFunConCir_Flag == false)
+			{
+				CFunConCir(1);					//该部分功能占用较多时间，要保证其只执行一次
+				CFunConCir_Flag = true;
+			}
 			app.xuhy_test_log("onTick_searchAndCheckUart com is --OK--");
 		}
 		else
@@ -2524,14 +2535,21 @@ public class Scratch extends Sprite {
 			if(notConnectArduinoCount >= 3)
 			{	
 				app.xuhy_test_log("uart disconnect unexpected comStatus = " + comStatus + ";IntervalID = " + IntervalID);
+				comStatus = 0x01;
+				notConnectArduinoCount = 0x00;	
+				CFunConCir_Flag = false;
+	
+				arduino.writeString('UART Close '+comIDTrue+'\n');//_wh
+//				arduino.flush();	//清除缓存_wh
+//				arduino.close();	//关闭COM口_wh
+				CFunConCir(0);
 				clearInterval(IntervalID);
 				IntervalID = 0x00;
-				comStatus = 0x01;
-				notConnectArduinoCount = 0x00;
-				CFunConCir(0);
-				
+				CFunConCir_Flag = false;
+				readCDFlag = false;//通信丢失提示框标志清零_wh
 			}
 		}
-		uartDetectStatustimerStop = uartDetectStatustimerStart = getTimer();
 	}
+	
+	
 }}

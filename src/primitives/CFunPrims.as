@@ -358,7 +358,7 @@ package primitives
 		//ckled_wh
 		private function primSetCkled(b:Block):void
 		{
-			var pin:Number = 13;//引脚号，模块参数第一个，参数类型为数字_wh
+/*			var pin:Number = 13;//引脚号，模块参数第一个，参数类型为数字_wh
 			var hl:Boolean;
 			if(interp.arg(b,0) == 'off')
 				hl = false;
@@ -394,12 +394,12 @@ package primitives
 				app.arduino.writeByte(0x00);
 				app.arduino.writeByte(int(hl));
 				app.CFunDelayms(5);//延时15ms_wh
-			}
+			}*/
 		}
 		
 		private function primSetLCD1602String(b:Block):void
-		{
-			app.ArduinoLCD1602 = true;
+	{
+/*				app.ArduinoLCD1602 = true;
 			var strLCD1602:String = new String();
 			strLCD1602 = interp.arg(b,0);			
 			if(app.ArduinoFlag == true)//判断是否为Arduino语句生成过程_wh
@@ -429,13 +429,13 @@ package primitives
 				
 				app.CFunDelayms(5);//延时15ms_wh
 				
-			}
+			}*/
 		}
 		
 		//机器人行进初始化_wh
 		private function CarDCInit():void
 		{
-			app.ArduinoDCM = true;
+/*			app.ArduinoDCM = true;
 			app.ArduinoMathNum = 0;
 			if(app.ArduinoPin[5] == 0)
 			{
@@ -462,13 +462,13 @@ package primitives
 			{
 				app.ArduinoHeadFs.writeUTFBytes("CFunDCMotor  dc_cfun;" + '\n');
 				app.ArduinoBlock[ID_CarDC] = 1;
-			}
+			}*/
 		}
 		
 		//写机器人前进速度输出_wh
 		private function primSetforward(b:Block):void
 		{
-			var speed:Number = interp.numarg(b,0);
+/*			var speed:Number = interp.numarg(b,0);
 			
 			if(app.ArduinoFlag == true)//判断是否为Arduino语句生成过程_wh
 			{
@@ -519,13 +519,13 @@ package primitives
 				app.arduino.writeByte(0x00);
 				app.arduino.writeByte(speed);
 				app.CFunDelayms(5);//延时15ms_wh
-			}
+			}*/
 		}
 		
 		//写机器人后退速度输出_wh
 		private function primSetback(b:Block):void
 		{
-			var speed:Number = interp.numarg(b,0);
+/*			var speed:Number = interp.numarg(b,0);
 			
 			if(app.ArduinoFlag == true)//判断是否为Arduino语句生成过程_wh
 			{
@@ -576,13 +576,13 @@ package primitives
 				app.arduino.writeByte(0x00);
 				app.arduino.writeByte(speed);
 				app.CFunDelayms(5);//延时15ms_wh
-			}
+			}*/
 		}
 		
 		//写机器人左转弯速度输出_wh
 		private function primSetleft(b:Block):void
 		{
-			var speed:Number = interp.numarg(b,0);
+/*			var speed:Number = interp.numarg(b,0);
 			
 			if(app.ArduinoFlag == true)//判断是否为Arduino语句生成过程_wh
 			{
@@ -633,13 +633,13 @@ package primitives
 				app.arduino.writeByte(0x00);
 				app.arduino.writeByte(speed);
 				app.CFunDelayms(5);//延时15ms_wh
-			}
+			}*/
 		}
 		
 		//写机器人右转弯速度输出_wh
 		private function primSetright(b:Block):void
 		{
-			var speed:Number = interp.numarg(b,0);
+/*			var speed:Number = interp.numarg(b,0);
 			
 			if(app.ArduinoFlag == true)//判断是否为Arduino语句生成过程_wh
 			{
@@ -690,7 +690,7 @@ package primitives
 				app.arduino.writeByte(0x00);
 				app.arduino.writeByte(speed);
 				app.CFunDelayms(5);//延时15ms_wh
-			}
+			}*/
 		}
 		
 		//写机器人灰度阀值_wh
@@ -800,7 +800,7 @@ package primitives
 		//写机器人机械臂输出_wh
 		private function primSetarm(b:Block):void
 		{
-			var pin:Number;
+/*			var pin:Number;
 			var angle:Number = interp.numarg(b,1);
 			var flag:Boolean = false;
 			if(interp.arg(b,0) == 'updown')
@@ -882,7 +882,7 @@ package primitives
 				app.arduino.writeByte(0x00);
 				app.arduino.writeByte(angle);
 				app.CFunDelayms(5);//延时15ms_wh
-			}
+			}*/
 		}
 		
 		//写PWM口输出_wh
@@ -891,7 +891,7 @@ package primitives
 			//var pin:Number = interp.numarg(b,0);//引脚号，模块参数第一个，参数类型为数字_wh
 			//var pwm:Number = interp.numarg(b,1);//PWM值，模块参数第一个，参数类型为数字_wh
 			
-			if(app.ArduinoFlag == true)//判断是否为Arduino语句生成过程_wh
+/*			if(app.ArduinoFlag == true)//判断是否为Arduino语句生成过程_wh
 			{
 				app.ArduinoMathNum = 0;
 				var pin:Number = interp.numarg(b,0);//引脚号，模块参数第一个，参数类型为数字_wh
@@ -951,13 +951,13 @@ package primitives
 				app.arduino.writeByte(0x00);
 				app.arduino.writeByte(pwm);
 				app.CFunDelayms(5);//延时15ms_wh
-			}
+			}*/
 		}
 		
 		//写舵机输出角度_wh
 		private function primSetSG(b:Block):void
 		{
-			if(app.ArduinoFlag == true)//判断是否为Arduino语句生成过程_wh
+/*			if(app.ArduinoFlag == true)//判断是否为Arduino语句生成过程_wh
 			{
 				app.ArduinoSer = true;
 				app.ArduinoMathNum = 0;
@@ -1029,13 +1029,13 @@ package primitives
 				app.arduino.writeByte(0x00);
 				app.arduino.writeByte(angle);
 				app.CFunDelayms(5);//延时15ms_wh
-			}
+			}*/
 		}
 		
 		//写无源蜂鸣器音乐输出_wh
 		private function primSetMUS(b:Block):void
 		{
-			var pin:Number = interp.numarg(b,0);//引脚号，模块参数第一个，参数类型为数字_wh
+/*			var pin:Number = interp.numarg(b,0);//引脚号，模块参数第一个，参数类型为数字_wh
 			var tone:Number;//音调，模块参数第一个，参数类型为数字_wh
 			var meter:Number;//节拍_wh
 			switch(interp.arg(b,1))
@@ -1147,14 +1147,14 @@ package primitives
 				app.arduino.writeByte(numfm[0]);
 				app.arduino.writeByte(numfm[1]);
 				app.CFunDelayms(5);//延时15ms_wh
-			}
+			}*/
 		}
 		
 		//写数码管输出数值_wh
 		private function primSetNUM(b:Block):void
 		{
 			
-			if(app.ArduinoFlag == true)//判断是否为Arduino语句生成过程_wh
+/*			if(app.ArduinoFlag == true)//判断是否为Arduino语句生成过程_wh
 			{
 				app.ArduinoSeg = true;
 				app.ArduinoMathNum = 0;
@@ -1247,13 +1247,13 @@ package primitives
 				app.arduino.writeByte(numf[2]);
 				app.arduino.writeByte(numf[3]);
 				app.CFunDelayms(5);//延时15ms_wh
-			}
+			}*/
 		}
 		
 		//写电机输出正负PWM_wh
 		private function primSetDM(b:Block):void
 		{
-			var pins:String;
+/*			var pins:String;
 			var pin:Number;
 			if(app.ArduinoFlag == true)//判断是否为Arduino语句生成过程_wh
 			{
@@ -1360,13 +1360,13 @@ package primitives
 				app.arduino.writeByte(dir);
 				app.arduino.writeByte(pwm);
 				app.CFunDelayms(5);//延时15ms_wh
-			}
+			}*/
 		}
 		
 		//写三色LED_wh
 		private function primSetRGB(b:Block):void
 		{
-			//var pin:Number = interp.numarg(b,0);//引脚号，模块参数第一个，参数类型为数字_wh
+/*			//var pin:Number = interp.numarg(b,0);//引脚号，模块参数第一个，参数类型为数字_wh
 			
 			if(app.ArduinoFlag == true)//判断是否为Arduino语句生成过程_wh
 			{
@@ -1489,7 +1489,7 @@ package primitives
 				app.arduino.writeByte(green);
 				app.arduino.writeByte(bule);
 				app.CFunDelayms(5);//延时15ms_wh
-			}
+			}*/
 		}
 		
 		//读外设数据输入，读之前的命令发送在Interpreter.as的evalCmd(b:Block)处理_wh
@@ -1514,7 +1514,7 @@ package primitives
 		//读数字口输入命令发送_wh
 		private function primReadDigital(b:Block):void
 		{
-			var pin:Number = interp.numarg(b,0);//引脚号，模块参数第一个，参数类型为数字_wh
+/*			var pin:Number = interp.numarg(b,0);//引脚号，模块参数第一个，参数类型为数字_wh
 			
 			if(app.ArduinoFlag == true)//判断是否为Arduino语句生成过程_wh
 			{
@@ -1541,13 +1541,13 @@ package primitives
 				app.arduino.writeByte(0x00);
 				app.arduino.writeByte(0x00);
 				app.arduino.writeByte(0x00);
-			}
+			}*/
 		}
 		
 		//读数字口输入命令发送_wh
 		private function primReadDigitals(b:Block):void
 		{
-			var pin:Number = interp.numarg(b,1);//引脚号，模块参数第一个，参数类型为数字_wh
+/*			var pin:Number = interp.numarg(b,1);//引脚号，模块参数第一个，参数类型为数字_wh
 			
 			if(app.ArduinoFlag == true)//判断是否为Arduino语句生成过程_wh
 			{
@@ -1574,13 +1574,13 @@ package primitives
 				app.arduino.writeByte(0x00);
 				app.arduino.writeByte(0x00);
 				app.arduino.writeByte(0x00);
-			}
+			}*/
 		}
 		
 		//ckd_wh
 		private function primReadCkK1(b:Block):void
 		{
-			var pin:Number=2;
+/*			var pin:Number=2;
 			
 			
 			if(app.ArduinoFlag == true)//判断是否为Arduino语句生成过程_wh
@@ -1608,13 +1608,13 @@ package primitives
 				app.arduino.writeByte(0x00);
 				app.arduino.writeByte(0x00);
 				app.arduino.writeByte(0x00);
-			}
+			}*/
 		}
 		
 		//ckd_wh
 		private function primReadCkK2(b:Block):void
 		{
-			var pin:Number=3;
+/*			var pin:Number=3;
 			
 			if(app.ArduinoFlag == true)//判断是否为Arduino语句生成过程_wh
 			{
@@ -1641,13 +1641,13 @@ package primitives
 				app.arduino.writeByte(0x00);
 				app.arduino.writeByte(0x00);
 				app.arduino.writeByte(0x00);
-			}
+			}*/
 		}
 		
 		//读循迹输入命令发送_wh
 		private function primReadTrack(b:Block):void
 		{
-			if(app.ArduinoFlag == true)//判断是否为Arduino语句生成过程_wh
+/*			if(app.ArduinoFlag == true)//判断是否为Arduino语句生成过程_wh
 			{
 				app.ArduinoTra = true;
 				if(app.ArduinoBlock[ID_ReadTRACK] == 0)
@@ -1674,13 +1674,13 @@ package primitives
 				app.arduino.writeByte(0x00);
 				app.arduino.writeByte(0x00);
 				app.arduino.writeByte(0x00);
-			}
+			}*/
 		}
 		
 		//读避障输入命令发送_wh
 		private function primReadAvoid(b:Block):void
 		{
-			if(app.ArduinoFlag == true)//判断是否为Arduino语句生成过程_wh
+/*			if(app.ArduinoFlag == true)//判断是否为Arduino语句生成过程_wh
 			{
 				app.ArduinoAvo = true;
 				if(app.ArduinoBlock[ID_ReadAVOID] == 0)
@@ -1713,7 +1713,7 @@ package primitives
 				app.arduino.writeByte(0x00);
 				app.arduino.writeByte(0x00);
 				app.arduino.writeByte(0x00);
-			}
+			}*/
 		}
 		
 //		//读超声波输入命令发送_wh
@@ -1757,7 +1757,7 @@ package primitives
 		//读电量输入命令发送_wh
 		private function primReadPower(b:Block):void
 		{
-			if(app.ArduinoFlag == true)//判断是否为Arduino语句生成过程_wh
+/*			if(app.ArduinoFlag == true)//判断是否为Arduino语句生成过程_wh
 			{
 				if(app.ArduinoBlock[ID_ReadPOWER] == 0)
 				{
@@ -1778,13 +1778,13 @@ package primitives
 				app.arduino.writeByte(0x00);
 				app.arduino.writeByte(0x00);
 				app.arduino.writeByte(0x00);
-			}
+			}*/
 		}
 		
 		//读电量输入命令发送_wh
 		private function primReadFraredR(b:Block):void
 		{
-			var pin:Number = interp.numarg(b,0);//引脚号，模块参数第一个，参数类型为数字_wh
+/*			var pin:Number = interp.numarg(b,0);//引脚号，模块参数第一个，参数类型为数字_wh
 			if(app.ArduinoFlag == true)//判断是否为Arduino语句生成过程_wh
 			{
 				app.ArduinoIR = true;
@@ -1813,13 +1813,13 @@ package primitives
 				app.arduino.writeByte(0x00);
 				app.arduino.writeByte(0x00);
 				app.arduino.writeByte(0x00);
-			}
+			}*/
 		}
 		
 		//读电容值输入命令发送_wh
 		private function primReadCap(b:Block):void
 		{
-			var pin:Number = interp.numarg(b,0);//引脚号，模块参数第一个，参数类型为数字_wh
+/*			var pin:Number = interp.numarg(b,0);//引脚号，模块参数第一个，参数类型为数字_wh
 			
 			if(app.ArduinoFlag == true)//判断是否为Arduino语句生成过程_wh
 			{
@@ -1847,7 +1847,7 @@ package primitives
 				app.arduino.writeByte(0x00);
 				app.arduino.writeByte(0x00);
 				app.arduino.writeByte(0x00);
-			}
+			}*/
 		}
 		
 		//读外设数据输入，读之前的命令发送在Interpreter.as的evalCmd(b:Block)处理_wh
@@ -1867,7 +1867,7 @@ package primitives
 		//读模拟口输入命令发送_wh
 		private function primReadAnalog(b:Block):void
 		{
-			var pin:Number = interp.numarg(b,0);//引脚号，模块参数第一个，参数类型为数字_wh
+/*			var pin:Number = interp.numarg(b,0);//引脚号，模块参数第一个，参数类型为数字_wh
 
 			if(app.ArduinoFlag == true)//判断是否为Arduino语句生成过程_wh
 			{
@@ -1889,13 +1889,13 @@ package primitives
 				app.arduino.writeByte(0x00);
 				app.arduino.writeByte(0x00);
 				//app.CFunDelayms(5);
-			}
+			}*/
 		}
 		
 		//读模拟口输入命令发送_wh
 		private function primReadAnalogs(b:Block):void
 		{
-			var pin:Number = interp.numarg(b,1);//引脚号，模块参数第2个，参数类型为数字_wh
+/*			var pin:Number = interp.numarg(b,1);//引脚号，模块参数第2个，参数类型为数字_wh
 			
 			if(app.ArduinoFlag == true)//判断是否为Arduino语句生成过程_wh
 			{
@@ -1916,13 +1916,13 @@ package primitives
 				app.arduino.writeByte(0x00);
 				app.arduino.writeByte(0x00);
 				app.arduino.writeByte(0x00);
-			}
+			}*/
 		}
 		
 		//cka_wh
 		private function primReadCkSo(b:Block):void
 		{
-			var pin:Number = 3;
+/*			var pin:Number = 3;
 			
 			if(app.ArduinoFlag == true)//判断是否为Arduino语句生成过程_wh
 			{
@@ -1943,13 +1943,13 @@ package primitives
 				app.arduino.writeByte(0x00);
 				app.arduino.writeByte(0x00);
 				app.arduino.writeByte(0x00);
-			}
+			}*/
 		}
 		
 		//cka_wh
 		private function primReadCkSi(b:Block):void
 		{
-			var pin:Number = 4;
+/*			var pin:Number = 4;
 			
 			if(app.ArduinoFlag == true)//判断是否为Arduino语句生成过程_wh
 			{
@@ -1970,13 +1970,13 @@ package primitives
 				app.arduino.writeByte(0x00);
 				app.arduino.writeByte(0x00);
 				app.arduino.writeByte(0x00);
-			}
+			}*/
 		}
 		
 		//cka_wh
 		private function primReadCkLi(b:Block):void
 		{
-			var pin:Number = 5;
+/*			var pin:Number = 5;
 			
 			if(app.ArduinoFlag == true)//判断是否为Arduino语句生成过程_wh
 			{
@@ -1997,13 +1997,13 @@ package primitives
 				app.arduino.writeByte(0x00);
 				app.arduino.writeByte(0x00);
 				app.arduino.writeByte(0x00);
-			}
+			}*/
 		}
 		
 		//cka_wh
 		private function primReadCkJX(b:Block):void
 		{
-			var pin:Number = 1;
+/*			var pin:Number = 1;
 			
 			if(app.ArduinoFlag == true)//判断是否为Arduino语句生成过程_wh
 			{
@@ -2024,13 +2024,13 @@ package primitives
 				app.arduino.writeByte(0x00);
 				app.arduino.writeByte(0x00);
 				app.arduino.writeByte(0x00);
-			}
+			}*/
 		}
 		
 		//cka_wh
 		private function primReadCkJY(b:Block):void
 		{
-			var pin:Number = 2;
+/*			var pin:Number = 2;
 			
 			if(app.ArduinoFlag == true)//判断是否为Arduino语句生成过程_wh
 			{
@@ -2051,7 +2051,7 @@ package primitives
 				app.arduino.writeByte(0x00);
 				app.arduino.writeByte(0x00);
 				app.arduino.writeByte(0x00);
-			}
+			}*/
 		}
 		
 		//读外设数据输入，读之前的命令发送在Interpreter.as的evalCmd(b:Block)处理_wh
@@ -2073,7 +2073,7 @@ package primitives
 		//读模拟口输入float命令发送_wh
 		private function primReadAFloat(b:Block):void
 		{
-			var pin:Number = interp.numarg(b,0);//引脚号，模块参数第一个，参数类型为数字_wh
+/*			var pin:Number = interp.numarg(b,0);//引脚号，模块参数第一个，参数类型为数字_wh
 			
 			if(app.ArduinoFlag == true)//判断是否为Arduino语句生成过程_wh
 			{
@@ -2098,14 +2098,14 @@ package primitives
 				app.arduino.writeByte(0x00);
 				app.arduino.writeByte(0x00);
 				app.arduino.writeByte(0x00);
-			}
+			}*/
 		}
 		
 		//超身波输入float命令发送_wh
 		private function primReadPFloat(b:Block):void
 		{
 			//var pin:Number = interp.numarg(b,0);//引脚号，模块参数第一个，参数类型为数字_wh
-			var pin:Number = 2;//引脚号，模块参数第一个，参数类型为数字_wh
+/*			var pin:Number = 2;//引脚号，模块参数第一个，参数类型为数字_wh
 			
 			if(app.ArduinoFlag == true)//判断是否为Arduino语句生成过程_wh
 			{
@@ -2142,7 +2142,7 @@ package primitives
 				app.arduino.writeByte(0x00);
 				app.arduino.writeByte(0x00);
 				app.arduino.writeByte(0x00);
-			}
+			}*/
 		}
-	}
-}
+}}
+		
