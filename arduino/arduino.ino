@@ -128,7 +128,7 @@ void loop() {
 //	ScratchBoardSensorReport();
 //	updateServoMotors = false;
 // }
-  delay(200);
+  delay(100);
   ScratchBoardSensorReport();
   readSerial();
   if (isAvailable) {                         //ruguo you shuju shuru

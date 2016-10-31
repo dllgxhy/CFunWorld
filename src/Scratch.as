@@ -1434,6 +1434,20 @@ public class Scratch extends Sprite {
 						case 'COM16':m.addItem(comArrays[i], comOpen16);break;//选中则开启_wh
 						case 'COM17':m.addItem(comArrays[i], comOpen17);break;//选中则开启_wh
 						case 'COM18':m.addItem(comArrays[i], comOpen18);break;//选中则开启_wh
+						case 'COM19':m.addItem(comArrays[i], comOpen19);break;//选中则开启_wh
+						case 'COM20':m.addItem(comArrays[i], comOpen20);break;//选中则开启_wh
+						case 'COM21':m.addItem(comArrays[i], comOpen21);break;//选中则开启_wh
+						case 'COM22':m.addItem(comArrays[i], comOpen22);break;//选中则开启_wh
+						case 'COM23':m.addItem(comArrays[i], comOpen23);break;//选中则开启_wh
+						case 'COM24':m.addItem(comArrays[i], comOpen24);break;//选中则开启_wh
+						case 'COM25':m.addItem(comArrays[i], comOpen25);break;//选中则开启_wh
+						case 'COM26':m.addItem(comArrays[i], comOpen26);break;//选中则开启_wh
+						case 'COM27':m.addItem(comArrays[i], comOpen27);break;//选中则开启_wh
+						case 'COM28':m.addItem(comArrays[i], comOpen28);break;//选中则开启_wh
+						case 'COM29':m.addItem(comArrays[i], comOpen29);break;//选中则开启_wh
+						case 'COM30':m.addItem(comArrays[i], comOpen30);break;//选中则开启_wh
+						case 'COM31':m.addItem(comArrays[i], comOpen31);break;//选中则开启_wh
+						case 'COM32':m.addItem(comArrays[i], comOpen32);break;//选中则开启_wh
 						default:break;
 					}
 				}
@@ -1451,6 +1465,7 @@ public class Scratch extends Sprite {
 				{
 					comTrue = true;
 					m.addItem(comIDTrue, comClose, true, true);//选中则关闭；只显示选中的COM口且前面勾对号(最后一个true)_wh
+					setAutoConnect();						//更改Bug					
 				}
 				else
 				{
@@ -1993,15 +2008,7 @@ public class Scratch extends Sprite {
 		SetConnectComIDText(comIDTrue);
 		setAutoConnect();
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	
 	
 	
