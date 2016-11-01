@@ -201,8 +201,8 @@ public class ProjectIO {
 		}
 	}
 
+	public function decodeAllImages(objList:Array, whenDone:Function, fail:Function = null):void {
 		// Load all images in all costumes from their image data, then call whenDone.
-	public function decodeAllImages(objList:Array, whenDone:Function, fail:Function = null):void {		
 		function imageDecoded():void {
 			for each (var o:* in imageDict) {
 				if (o == 'loading...') return; // not yet finished loading

@@ -93,9 +93,8 @@ public class PaletteBuilder  extends Sprite {
 				return;
 			}
 		}
-		//if(selectedCategory%100 == 2){//测试是否有CFun（31）传进来——测试结果原先代码下没有传进来_wh2015.2.3
-		//while(1);}
-		//if(selectedCategory%100 == 2){
+
+		
 		addBlocksForCategory(selectedCategory, catColor);
 		updateCheckboxes();
 		//}

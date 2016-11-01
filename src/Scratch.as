@@ -329,89 +329,135 @@ public class Scratch extends Sprite {
 	
 	public var dllOk:Number = 10;
 	protected function initialize():void {
-		//将dll文件放在系统目录下_wh
-		var OS32:Boolean = Capabilities.supports32BitProcesses;//是否支持64位机_wh
-		var OS64:Boolean = Capabilities.supports64BitProcesses;//是否为64位机_wh
-		OS = Capabilities.os;//操作系统_wh
-		var OS32str:String = "C:/Windows/System32/";
-		var OS64str:String = "C:/Windows/SysWOW64/";
-		
-		var file2:File;
-		var file3:File;
+		var file1:File;
+		//*******************************************注意：每个版本需要修改（包括相应文件）*****************************************//
+		file1= new File(File.userDirectory.resolvePath("Arduino-Scratch/arduinos/flag_v.txt").nativePath);//在相应目录下寻找或建立dll.txt_wh
+		//*******************************************注意：每个版本需要修改（包括相应文件）****************************************//
+		var fs:FileStream = new FileStream();
 		try
 		{
-			file3= new File(File.applicationDirectory.resolvePath("avrtool/pthreadVC2.dll").nativePath);//_wh
-			if(OS64)
-				file2= new File(File.applicationDirectory.resolvePath(OS64str+"pthreadVC2.dll").nativePath);//_wh
-			else
-				file2= new File(File.applicationDirectory.resolvePath(OS32str+"pthreadVC2.dll").nativePath);//_wh
-			if(file2.exists)
-			{
-				dllOk ++;
-				file3.copyTo(file2,true);
-			}
-			else
-			{
-				file3.copyTo(file2,true);
-				dllOk ++;
-			}
+			fs.open(file1,FileMode.READ);
+			fs.position = 0;
+			var i:int = fs.readByte();
+			fs.close();
 		}
 		catch(Error)
 		{
-			;
+			i = 0;
 		}
-		try
+		if(i == 49)
+			dllOk = 14;
+		else
 		{
-			file3= new File(File.applicationDirectory.resolvePath("avrtool/msvcr100d.dll").nativePath);//_wh
-			if(OS64)
-				file2= new File(File.applicationDirectory.resolvePath(OS64str+"msvcr100d.dll").nativePath);//_wh
-			else
-				file2= new File(File.applicationDirectory.resolvePath(OS32str+"msvcr100d.dll").nativePath);//_wh
-			if(file2.exists)
+			//将dll文件放在系统目录下_wh
+			var OS32:Boolean = Capabilities.supports32BitProcesses;//是否支持32位机_wh
+			var OS64:Boolean = Capabilities.supports64BitProcesses;//是否为64位机_wh
+			OS = Capabilities.os;//操作系统_wh
+			var OS32str:String = "C:/Windows/System32/";
+			var OS64str:String = "C:/Windows/SysWOW64/";
+			var file2:File;
+			var file3:File;
+			try
 			{
-				dllOk ++;
-				file3.copyTo(file2,true);
+				file3= new File(File.applicationDirectory.resolvePath("avrtool/pthreadVC2.dll").nativePath);//_wh
+				if(OS64)
+					file2= new File(File.applicationDirectory.resolvePath(OS64str+"pthreadVC2.dll").nativePath);//_wh
+				else
+					file2= new File(File.applicationDirectory.resolvePath(OS32str+"pthreadVC2.dll").nativePath);//_wh
+				if(file2.exists)
+				{
+					dllOk ++;
+					file3.copyTo(file2,true);
+				}
+				else
+				{
+					file3.copyTo(file2,true);
+					dllOk ++;
+				}
 			}
-			else
+			catch(Error)
 			{
-				file3.copyTo(file2,true);
-				dllOk ++;
+				;
+			}
+			try
+			{
+				file3= new File(File.applicationDirectory.resolvePath("avrtool/msvcr100d.dll").nativePath);//_wh
+				if(OS64)
+					file2= new File(File.applicationDirectory.resolvePath(OS64str+"msvcr100d.dll").nativePath);//_wh
+				else
+					file2= new File(File.applicationDirectory.resolvePath(OS32str+"msvcr100d.dll").nativePath);//_wh
+				if(file2.exists)
+				{
+					dllOk ++;
+					file3.copyTo(file2,true);
+				}
+				else
+				{
+					file3.copyTo(file2,true);
+					dllOk ++;
+				}
+			}
+			catch(Error)
+			{
+				;
+			}
+			try
+			{
+				file3= new File(File.applicationDirectory.resolvePath("avrtool/msvcr120d.dll").nativePath);//_wh
+				if(OS64)
+					file2= new File(File.applicationDirectory.resolvePath(OS64str+"msvcr120d.dll").nativePath);//_wh
+				else
+					file2= new File(File.applicationDirectory.resolvePath(OS32str+"msvcr120d.dll").nativePath);//_wh
+				if(file2.exists)
+				{
+					dllOk ++;
+					file3.copyTo(file2,true);
+				}
+				else
+				{
+					file3.copyTo(file2,true);
+					dllOk ++;
+				}
+			}
+			catch(Error)
+			{
+				;
+			}
+			try
+			{
+				if(OS64)
+				{
+					file3= new File(File.applicationDirectory.resolvePath("avrtool/win7/msvcr100.dll").nativePath);//_wh
+					file2= new File(File.applicationDirectory.resolvePath(OS64str+"msvcr100.dll").nativePath);//_wh
+				}
+				else
+				{
+					file3= new File(File.applicationDirectory.resolvePath("avrtool/xp/msvcr100.dll").nativePath);//_wh
+					file2= new File(File.applicationDirectory.resolvePath(OS32str+"msvcr100.dll").nativePath);//_wh
+				}
+				if(file2.exists)
+				{
+					dllOk ++;
+					file3.copyTo(file2,true);
+				}
+				else
+				{
+					file3.copyTo(file2,true);
+					dllOk ++;
+				}
+			}
+			catch(Error)
+			{
+				;
+			}
+			if(dllOk > 10)
+			{
+				fs.open(file1,FileMode.WRITE);
+				fs.position = 0;
+				fs.writeUTFBytes("1");
+				fs.close();
 			}
 		}
-		catch(Error)
-		{
-			;
-		}
-//		var file1:File;
-//		//*******************************************注意：每个版本需要修改（包括相应文件）*****************************************//
-//		file1= new File(File.userDirectory.resolvePath("AS-Block/arduinos/flag_v1.7.4.txt").nativePath);//在相应目录下寻找或建立dll.txt_wh
-//		//*******************************************注意：每个版本需要修改（包括相应文件）****************************************//
-//		var fs:FileStream = new FileStream();
-//		try
-//		{
-//			fs.open(file1,FileMode.READ);
-//			fs.position = 0;
-//			var i:int = fs.readByte();
-//			fs.close();
-//		}
-//		catch(Error)
-//		{
-//			i = 0;
-//		}
-//		if(i != 49)
-//		{
-//			//DialogBox.warnconfirm(Translator.map(OS),Translator.map("please wait a moment"), null, app.stage);//软件界面中部显示提示框_whFirst start
-//			file3= new File(File.applicationDirectory.resolvePath("arduinos").nativePath);//_wh
-//			file2= new File(File.userDirectory.resolvePath("AS-Block/arduinos").nativePath);//_wh
-//			file3.copyTo(file2,true);
-//			file3= new File(File.applicationDirectory.resolvePath("ArduinoBuilder").nativePath);//_wh
-//			file2= new File(File.userDirectory.resolvePath("AS-Block/ArduinoBuilder").nativePath);//_wh
-//			file3.copyTo(file2,true);
-//			fs.open(file1,FileMode.WRITE);
-//			fs.position = 0;
-//			fs.writeByte(49);
-//			fs.close();
-//		}
 		
 		//Arduino程序生成相关文件新建_wh
 		app.ArduinoHeadFile= new File(File.userDirectory.resolvePath("AS-Block/arduinos/head.txt").nativePath);
@@ -1268,17 +1314,15 @@ public class Scratch extends Sprite {
 	public function checkUART():Array
 	{
 		var comArray:Array = new Array();
-		for(var i:int =1;i<=32;i++)
+		if(comTrue)
+			arduino.close();
+		for(var i:int =1;i<=32;i++)//COM口号限制量增加到32_wh
 		{
+			if(arduino.isSupported("COM"+i))
 			{
-				arduino.close();//重新关闭_wh
-				if(arduino.connect("COM"+i))//判断是否能打开成功_wh
-				{
-					comArray.push("COM"+i);
-				}
+				comArray.push("COM"+i);
 			}
 		}
-		arduino.close();//重新关闭_wh
 		return comArray;
 	}
 	
@@ -1387,9 +1431,9 @@ public class Scratch extends Sprite {
 				data[i] = 0;
 			}
 		}
-		arduinoSoundValue = (data[0] * 256 + data[1])*100 >>10;	
-		arduinoSlideValue = (data[2] * 256 + data[3])*100 >>10;	
-		arduinoLightValue = (data[4] * 256 + data[5])*100 >>10;	
+		arduinoSoundValue = (int)(data[0] * 256 + data[1])* 3  >> 3;	
+		arduinoSlideValue = (int)(data[2] * 256 + data[3])*100 >>10;	
+		arduinoLightValue = (int)(data[4] * 256 + data[5])*100 >>10;	
 		
 //		arduinoLightValue = (data[6] * 256 + data[7])*100 >>10;	
 //		arduinoLightValue = (data[8] * 256 + data[9])*100 >>10;	
@@ -1465,7 +1509,7 @@ public class Scratch extends Sprite {
 				{
 					comTrue = true;
 					m.addItem(comIDTrue, comClose, true, true);//选中则关闭；只显示选中的COM口且前面勾对号(最后一个true)_wh
-					setAutoConnect();						//更改Bug					
+					setAutoConnect();						   //更改Bug，git编号：339ea6f					
 				}
 				else
 				{

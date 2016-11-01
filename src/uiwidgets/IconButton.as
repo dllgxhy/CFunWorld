@@ -52,7 +52,7 @@ public class IconButton extends Sprite {
 		this.isRadioButton = isRadioButton;
 		useDefaultImages();
 		setImage(onImageOrName, offImageObj);
-		addEventListener(MouseEvent.MOUSE_DOWN, mouseDown);
+		addEventListener(MouseEvent.MOUSE_DOWN, mouseDown,false,1);//增强响应优先级_wh2016.1.17
 		addEventListener(MouseEvent.MOUSE_OVER, mouseOver);
 		addEventListener(MouseEvent.MOUSE_OUT, mouseOut);
 		mouseChildren = false;

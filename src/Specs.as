@@ -493,7 +493,7 @@ public class Specs {
 		//基本IO操作模块 所涉及到模拟IO口 和 数字IO口，这类口在Arduino端不需要库函数即可读取
 //		["read Dx pin %m.dpin",					    "b", 13, "readdigital:",	4],//数字口输入
 //		["read Ax pin A%m.apin",					"r", 13, "readanalog:",		0],//模拟口输入
-//		["set Dx pin %m.dpin as %m.highlow",		" ", 13, "setdigital:",		2,	'high'],//数字口输出
+		["set Dx pin %m.dpin as %m.highlow",		" ", 13, "setdigital:",		2,	'high'],//数字口输出
 //		["set pwm pin %m.pwmpin as %n",				" ", 13, "setpwm:",			3,	120],//pwm口输出
 //		["-"],
 		
