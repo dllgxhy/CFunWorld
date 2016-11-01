@@ -241,7 +241,7 @@ public class Watcher extends Sprite implements DragClient {
 			case "readcksound": return app.arduinoSoundValue;//_wh
 			case "readckslide": return app.arduinoSlideValue;//_wh
 			case "readcklight": return app.arduinoLightValue;//_wh
-			case "readckUltrasonicSensor": return app.arduinoUltrasonicValue;//_wh
+			case "readckUltrasonicSensor": return app.arduinoUltrasonicValue;
 			case "readckjoyx": return app.CKjoyx;//_wh
 			case "readckjoyy": return app.CKjoyy;//_wh
 		}

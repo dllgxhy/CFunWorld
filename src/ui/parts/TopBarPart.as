@@ -38,7 +38,7 @@ public class TopBarPart extends UIPart {
 	protected var fileMenu:IconButton;
 	protected var editMenu:IconButton;
 	protected var comMenu:IconButton;//主菜单增加COM项_wh
-	protected var myMenu:IconButton;//主菜单增加COM项_wh
+	protected var courseMenu:IconButton;//主菜单增加COM项_wh
 	protected var helpMenu:IconButton;//主菜单增加论坛链接项_wh
 
 	private var copyTool:IconButton;
@@ -79,10 +79,10 @@ public class TopBarPart extends UIPart {
 			Scratch.app.showFileMenu(Menu.dummyButton());
 			Scratch.app.showEditMenu(Menu.dummyButton());
 			Scratch.app.showCOMMenu(Menu.dummyButton());//主菜单增加COM项_wh
-			Scratch.app.showMYMenu(Menu.dummyButton());//主菜单增加猫友汇项_wh
+			Scratch.app.showCourseMenu(Menu.dummyButton());//主菜单增加教程项
 			Scratch.app.showHelpMenu(Menu.dummyButton());//主菜单增加论坛链接项_wh
 		}
-		return ['File', 'Edit', 'COM','MYH','Forum/Help','Tips', 'Duplicate', 'Delete', 'Grow', 'Shrink', 'Block help', 'Offline Editor','comID'];
+		return ['File', 'Edit', 'COM','Course','Forum/Help','Tips', 'Duplicate', 'Delete', 'Grow', 'Shrink', 'Block help', 'Offline Editor','comID'];
 	}
 
 	protected function removeTextButtons():void {
@@ -90,7 +90,7 @@ public class TopBarPart extends UIPart {
 			removeChild(fileMenu);
 			removeChild(editMenu);
 			removeChild(comMenu);//主菜单增加COM项_wh
-			removeChild(myMenu);//主菜单增加COM项_wh
+			removeChild(courseMenu);//主菜单增加COM项_wh
 			removeChild(helpMenu);//主菜单增加COM项_wh
 		}
 	}
@@ -134,9 +134,9 @@ public class TopBarPart extends UIPart {
 		nextX += comMenu.width + buttonSpace;
 		
 		//主菜单增加猫友汇项_wh
-		myMenu.x = nextX;
-		myMenu.y = buttonY;
-		nextX += myMenu.width + buttonSpace;
+		courseMenu.x = nextX;
+		courseMenu.y = buttonY;
+		nextX += courseMenu.width + buttonSpace;
 		
 		//主菜单增加论坛链接项_wh
 		helpMenu.x = nextX;
@@ -177,8 +177,8 @@ public class TopBarPart extends UIPart {
 		addChild(fileMenu = makeMenuButton('File', app.showFileMenu, true));
 		addChild(editMenu = makeMenuButton('Edit', app.showEditMenu, true));
 		addChild(comMenu = makeMenuButton('COM', app.showCOMMenu, true));//主菜单增加COM项，名称设置_wh
-		addChild(myMenu = makeMenuButton('MYH', app.showMYMenu, true));//主菜单增加猫友汇项，名称设置_wh
-		addChild(helpMenu = makeMenuButton('Forum/Help', app.showHelpMenu, true));//主菜单增加COM项，名称设置_wh
+		addChild(courseMenu = makeMenuButton('Course', app.showCourseMenu, true));//主菜单增加猫友汇项，名称设置_wh
+		addChild(helpMenu = makeMenuButton('Help', app.showHelpMenu, true));//主菜单增加COM项，名称设置_wh
 	}
 
 	private function addToolButtons():void {

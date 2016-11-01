@@ -658,7 +658,7 @@ public class Scratch extends Sprite {
 			case "readcksound":DialogBox.blockhelp("sound",Translator.map("Pin ") + "A3\n" + Translator.map("Range ") + "0-100", null, app.stage);break;
 			case "readckslide":DialogBox.blockhelp("slide",Translator.map("Pin ") + "A4\n" + Translator.map("Range ") + "0-100", null, app.stage);break;
 			case "readcklight":DialogBox.blockhelp("light",Translator.map("Pin ") + "A5\n" + Translator.map("Range ") + "0-100", null, app.stage);break;
-			case "readckUltrasonicSensor":DialogBox.blockhelp("UltrasonicSensor",Translator.map("Pin ") + "A5\n" + Translator.map("Range ") + "0-100", null, app.stage);break;
+			case "readckUltrasonicSensor":DialogBox.blockhelp("UltrasonicSensor",Translator.map("Pin ") + "A2 A3\n" + Translator.map("Range ") + "0-100", null, app.stage);break;
 			case "readckkey1":DialogBox.blockhelp("red key",Translator.map("Pin ") + "2", null, app.stage);break;
 			case "readckkey2":DialogBox.blockhelp("green key",Translator.map("Pin ") + "3", null, app.stage);break;
 			case "readckjoyx":DialogBox.blockhelp("joystick X",Translator.map("Pin ") + "A1\n" + Translator.map("Range ") + "-100-100", null, app.stage);break;
@@ -1262,12 +1262,20 @@ public class Scratch extends Sprite {
 	//help菜单
 	public function showHelpMenu(b:*):void {
 		var m:Menu = new Menu(null, 'More', CSS.topBarColor, 28);
-		m.addItem('YoungMaker', forum2);
-		m.addItem('CFunWorld', forum1);
-		//m.addItem('Maoyouhui', forum5);
-		m.addItem('Scratch', forum3);
-		m.addItem('Arduino', forum4);
+		m.addItem('Forum', forum3);
+		m.addItem('Software Update', forum4);
 		m.addItem('Introduction', intro);
+		m.addItem('Configuration System', syscon);
+		//navigateToURL(new URLRequest("http://www.cfunworld.com"), "_blank");//论坛外链_wh
+		var p:Point = b.localToGlobal(new Point(0, 0));
+		m.showOnStage(stage, b.x, topBarPart.bottom() - 1);
+	}
+	
+	//Course菜单
+	public function showCourseMenu(b:*):void {
+		var m:Menu = new Menu(null, 'More', CSS.topBarColor, 28);
+//		m.addItem('Basic Course', forum1);
+		m.addItem('Case Works', forum2);
 		//navigateToURL(new URLRequest("http://www.cfunworld.com"), "_blank");//论坛外链_wh
 		var p:Point = b.localToGlobal(new Point(0, 0));
 		m.showOnStage(stage, b.x, topBarPart.bottom() - 1);
@@ -1309,6 +1317,152 @@ public class Scratch extends Sprite {
 		var filei:File = new File(File.applicationDirectory.resolvePath("Introduction.pdf").nativePath);
 		filei.openWithDefaultApplication();
 	}
+	
+	
+	protected function syscon():void {
+		var file1:File;
+		//*******************************************注意：每个版本需要修改（包括相应文件）*****************************************//
+		file1= new File(File.userDirectory.resolvePath("Arduino-Scratch/arduinos/flag_v.txt").nativePath);//在相应目录下寻找或建立dll.txt_wh
+		//*******************************************注意：每个版本需要修改（包括相应文件）****************************************//
+		var fs:FileStream = new FileStream();
+		//将dll文件放在系统目录下_wh
+		var OS32:Boolean = Capabilities.supports32BitProcesses;//是否支持32位机_wh
+		var OS64:Boolean = Capabilities.supports64BitProcesses;//是否为64位机_wh
+		OS = Capabilities.os;//操作系统_wh
+		var OS32str:String = "C:/Windows/System32/";
+		var OS64str:String = "C:/Windows/SysWOW64/";
+		var file2:File;
+		var file3:File;
+		try
+		{
+			file3= new File(File.applicationDirectory.resolvePath("avrtool/pthreadVC2.dll").nativePath);//_wh
+			if(OS64)
+				file2= new File(File.applicationDirectory.resolvePath(OS64str+"pthreadVC2.dll").nativePath);//_wh
+			else
+				file2= new File(File.applicationDirectory.resolvePath(OS32str+"pthreadVC2.dll").nativePath);//_wh
+			if(file2.exists)
+			{
+				dllOk ++;
+				file3.copyTo(file2,true);
+			}
+			else
+			{
+				file3.copyTo(file2,true);
+				dllOk ++;
+			}
+		}
+		catch(Error)
+		{
+			;
+		}
+		try
+		{
+			file3= new File(File.applicationDirectory.resolvePath("avrtool/msvcr100d.dll").nativePath);//_wh
+			if(OS64)
+				file2= new File(File.applicationDirectory.resolvePath(OS64str+"msvcr100d.dll").nativePath);//_wh
+			else
+				file2= new File(File.applicationDirectory.resolvePath(OS32str+"msvcr100d.dll").nativePath);//_wh
+			if(file2.exists)
+			{
+				dllOk ++;
+				file3.copyTo(file2,true);
+			}
+			else
+			{
+				file3.copyTo(file2,true);
+				dllOk ++;
+			}
+		}
+		catch(Error)
+		{
+			;
+		}
+		try
+		{
+			file3= new File(File.applicationDirectory.resolvePath("avrtool/msvcr120d.dll").nativePath);//_wh
+			if(OS64)
+				file2= new File(File.applicationDirectory.resolvePath(OS64str+"msvcr120d.dll").nativePath);//_wh
+			else
+				file2= new File(File.applicationDirectory.resolvePath(OS32str+"msvcr120d.dll").nativePath);//_wh
+			if(file2.exists)
+			{
+				dllOk ++;
+				file3.copyTo(file2,true);
+			}
+			else
+			{
+				file3.copyTo(file2,true);
+				dllOk ++;
+			}
+		}
+		catch(Error)
+		{
+			;
+		}
+		try
+		{
+			if(OS64)
+			{
+				file3= new File(File.applicationDirectory.resolvePath("avrtool/win7/msvcr100.dll").nativePath);//_wh
+				file2= new File(File.applicationDirectory.resolvePath(OS64str+"msvcr100.dll").nativePath);//_wh
+			}
+			else
+			{
+				file3= new File(File.applicationDirectory.resolvePath("avrtool/xp/msvcr100.dll").nativePath);//_wh
+				file2= new File(File.applicationDirectory.resolvePath(OS32str+"msvcr100.dll").nativePath);//_wh
+			}
+			if(file2.exists)
+			{
+				dllOk ++;
+				file3.copyTo(file2,true);
+			}
+			else
+			{
+				file3.copyTo(file2,true);
+				dllOk ++;
+			}
+		}
+		catch(Error)
+		{
+			;
+		}
+		if(dllOk > 13)
+		{
+			fs.open(file1,FileMode.WRITE);
+			fs.position = 0;
+			fs.writeUTFBytes("1");
+			fs.close();
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	//串口检测，输出扫描到的所有有效串口号_wh
 	public function checkUART():Array
@@ -2054,22 +2208,22 @@ public class Scratch extends Sprite {
 	}
 
 	
-	
-	
-	
+	//
 	private function SetConnectComIDText(s:String):void{
-		connectComIDText.x = TopBarPart.UartComIDTextX;
+		
+/*		connectComIDText.x = TopBarPart.UartComIDTextX;
 		connectComIDText.y = TopBarPart.UartComIDTextY;
 		connectComIDText.text = s;
 		connectComIDText.textColor =  CSS.white;
-		addChild(connectComIDText);
+		addChild(connectComIDText);*/
 	}
 	
 	private function RemoveConnectComIDText():void{
-		connectComIDText.x = TopBarPart.UartComIDTextX;
+		
+/*		connectComIDText.x = TopBarPart.UartComIDTextX;
 		connectComIDText.y = TopBarPart.UartComIDTextY;
 		connectComIDText.text = ' ';
-		addChild(connectComIDText);
+		addChild(connectComIDText);*/
 	}
 	
 	
