@@ -152,6 +152,15 @@ msgstr "在 %n 秒内滑行到 x:%n y:%n"
 msgid "go back %n layers"
 msgstr "下移 %n 层"
 
+msgid "Course"
+msgstr "教程"
+
+msgid "Basic Course"
+msgstr "基础课程"
+
+msgid "Case Works"
+msgstr "案例作品"
+
 msgid "go to %m.spriteOrMouse"
 msgstr "移到 %m.spriteOrMouse"
 
@@ -1116,8 +1125,17 @@ msgstr "拍掌"
 msgid "Hardware"
 msgstr ""
 
-msgid "help"
+msgid "Help"
 msgstr "帮助"
+
+msgid "Software Update"
+msgstr "软件更新"
+
+msgid "Configuration System"
+msgstr "配置系统"
+
+msgid "Forum"
+msgstr "论坛"
 
 msgid "Hello!"
 msgstr ""

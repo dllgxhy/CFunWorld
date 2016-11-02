@@ -128,7 +128,7 @@ void loop() {
 //	ScratchBoardSensorReport();
 //	updateServoMotors = false;
 // }
-  delay(100);
+  delay(50);
   ScratchBoardSensorReport();
   readSerial();
   if (isAvailable) {                         //ruguo you shuju shuru
@@ -174,11 +174,16 @@ void loop() {
 0xfe 0xfd      n        0x01       xxxxx   0xfe 0xfb
 数据类型
 */
+
+int getUltimateSonicDataFlag = 0x00;
 void ScratchBoardSensorReport() //PicoBoard protocol, 2 bytes per sensor
 {
   char i = 0x00; 
   readSensorValues();
-//  readUltraSonicValues();
+  if(getUltimateSonicDataFlag == 0x01){
+    readUltraSonicValues();
+	getUltimateSonicDataFlag = 0x00;
+  }
   Serial.write(0xfe);
   Serial.write(0xfd);  
   Serial.write(0x14);  
@@ -462,15 +467,11 @@ void parseData() {
         //writeEnd();
       }
       break;
-      //    case 0x51: { //ultransonic
-      //        value = us.distanceCm();
-      //        writeSerial(0xEE);
-      //        writeSerial(0x66);
-      //        writeSerial(0x51);
-      //        writeSerial(0x00);
-      //        sendValue(value);
-      //      }
-      //      break;
+    case 0x51: { //超声波，当Scratch要这个数据的时候才利用传感器，否则不使用
+//		value = us.distanceCm();
+		getUltimateSonicDataFlag = 0x01;
+	  }
+      break;
     case 0x52: { //track
         ///////////////////////digital////////////////////////////
         writeSerial(0xEE);

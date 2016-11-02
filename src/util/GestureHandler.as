@@ -180,7 +180,7 @@ public class GestureHandler {
 
 		evt.updateAfterEvent(); // needed to avoid losing display updates with later version of Flash 11
 		hideBubble();
-		mouseIsDown = true;
+		mouseIsDown = true;	
 		if (gesture == 'clickOrDoubleClick') {
 			handleDoubleClick(mouseDownEvent);
 			return;

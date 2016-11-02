@@ -156,7 +156,7 @@ package primitives
 			primTable["readckslide"]	        = function(b:*):* { return app.arduinoSlideValue};
 			primTable["readcklight"]		    = function(b:*):* { return app.arduinoLightValue};
 			primTable["readckUltrasonicSensor"]	= function(b:*):* { return app.arduinoUltrasonicValue};
-			
+//			primTable["readckUltrasonicSensor"]	= primReadUltimateSonic;
 			primTable["readckjoyx"] = primReadShort;//ck_wh
 			primTable["readckjoyxSend"] = primReadCkJX;//ck_wh
 			primTable["readckjoyy"] = primReadShort;//ck_wh
@@ -170,6 +170,21 @@ package primitives
 			
 			primTable["whenArduino"] = primArduino;//Arduino程序头_wh
 		}
+		
+		//下发指令下位机读取超声波数值通过心跳包上报到Scratch
+		public function primReadUltimateSonic(b:Block):int{
+			app.arduino.writeByte(0xff);
+			app.arduino.writeByte(0x55);
+			app.arduino.writeByte(ID_ReadULTR);
+			app.arduino.writeByte(0x01);
+			app.arduino.writeByte(0x02);
+			app.arduino.writeByte(0x03);
+			app.arduino.writeByte(0x04);
+			app.arduino.writeByte(0x05);
+//			app.xuhy_test_log(" -- primReadUltimateSonic -- ");
+			app.CFunDelayms(10);//延时10ms
+			return app.arduinoUltrasonicValue;
+		}	
 		
 //		//输出testnum用_wh
 //		public static function setTestnum(num:int):void//静态变量不能外部赋值_wh

@@ -26,7 +26,6 @@ package {
 import com.quetwo.Arduino.ArduinoConnector;
 import com.quetwo.Arduino.ArduinoConnectorEvent;
 
-
 import flash.desktop.NativeApplication;
 import flash.desktop.NativeProcess;
 import flash.desktop.NativeProcessStartupInfo;
@@ -64,6 +63,8 @@ import flash.text.TextFieldType;
 import flash.text.TextFormat;
 import flash.utils.ByteArray;
 import flash.utils.Timer;
+import flash.utils.clearInterval;
+import flash.utils.setInterval;
 import flash.utils.getTimer;
 
 import blocks.Block;
@@ -114,11 +115,6 @@ import util.Server;
 import util.Transition;
 
 import watchers.ListWatcher;
-
-
-import flash.utils.getTimer;
-import flash.utils.Timer;
-import flash.utils.*;
 
 //网络外链_wh
 
@@ -279,6 +275,7 @@ public class Scratch extends Sprite {
 	public var OS:String = new String;
 	
 	public var test:Number = 0;//测试量_wh
+	public var cfunprime:CFunPrims = new CFunPrims(this,interp);
 	
 	public var showCOMFlag:Boolean = false;//COM口正在连接_wh
 	public var IntervalID:uint = 0x00; 				//查询UART是否工作正常定时器的ID号，可以用于清除定时器。
@@ -1435,35 +1432,6 @@ public class Scratch extends Sprite {
 		}
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	//串口检测，输出扫描到的所有有效串口号_wh
 	public function checkUART():Array
 	{
@@ -1482,18 +1450,21 @@ public class Scratch extends Sprite {
 	
 	//串口数据接收事件处理_wh
 	public const uartDataID_checkUartAvail:int     = 0x01;
+	public var processUartReadData_Flag:Boolean    = false;
+	
+	//接收到串口中断
 	public function fncArduinoData(aEvt: ArduinoConnectorEvent):void
 	{
-//		if(app.comCOMing == 0)
-//		{
-//			app.comCOMing = 0x01;
-//		}
-//		else
-//		{
-//			return ;
-//		}
-		var paraDataBuffer:Array = new Array();
 		uartDetectStatustimerStop = 0x01;
+		processUartReadData_Flag = true;
+		app.comCOMing = 0x00;
+		
+		Para_UartData();
+	}
+	
+	public function Para_UartData():void
+	{
+		var paraDataBuffer:Array  = new Array();
 		try
 		{
 			comDataArrayOld = comDataArrayOld.concat(arduino.readBytesAsArray());//将接收到的数据放在comDataArrayOld数组中_wh
@@ -1502,7 +1473,7 @@ public class Scratch extends Sprite {
 		{
 			return;
 		}
-		
+	
 		app.comCOMing = 0x00;
 		
 		while(1)
@@ -1559,7 +1530,7 @@ public class Scratch extends Sprite {
 				//数据左移一位_wh
 				if(comDataArray.length >= 2)
 					comDataArrayOld.shift();//数组整体前移一位_wh
-				//数据未接收全_wh
+					//数据未接收全_wh
 				else
 					break;
 			}
@@ -1569,7 +1540,6 @@ public class Scratch extends Sprite {
 			}
 		}
 	}
-	
 	
 	public var arduinoLightValue:int      = 0x00;  //板载sensor数据
 	public var arduinoSlideValue:int      = 0x00;
@@ -1602,12 +1572,12 @@ public class Scratch extends Sprite {
 			return;
 		showCOMFlag = true;
 		var m:Menu = new Menu(null, 'COM', CSS.topBarColor, 28);
+		
 		if(cmdBackNum == 0)//固件下载过程中不允许操作COM口_wh
 		{
 			var comArrays:Array = new Array();
 			//COM口未开启_wh
-			if(comTrue == false)
-			{
+			if(comTrue == false){
 				comArrays = checkUART();//获取扫描到的COM口编号(可用未开启的)_wh
 				for(var i:int = 0; i < comArrays.length; i++)//显示扫描到的COM号_wh
 				{
@@ -1651,25 +1621,66 @@ public class Scratch extends Sprite {
 				}
 			}
 			//COM口已开启_wh
-			else
-			{
+			else if(comStatus != 0x00){
+				xuhy_test_log("showCOMMenu comStatus != 0x00");
 				arduino.close();
 				comTrue = false;
 				comDataArrayOld.splice();//数组清零_wh
-//				var t1:Number = getTimer();
-//				while(getTimer() - t1 < 100)
-//					;
-				if(arduino.connect(comIDTrue,115200))//判断是否能打开成功_wh
-				{
-					comTrue = true;
-					m.addItem(comIDTrue, comClose, true, true);//选中则关闭；只显示选中的COM口且前面勾对号(最后一个true)_wh
-					setAutoConnect();						   //更改Bug，git编号：339ea6f					
+				comArrays = checkUART();//获取扫描到的COM口编号(可用未开启的)_wh
+				for(var i:int = 0; i < comArrays.length; i++){//显示扫描到的COM号_wh	
+					if(comArrays[i] == comIDTrue){		
+						if(arduino.connect(comIDTrue,115200)){//判断是否可用_wh
+							comTrue = true;
+							m.addItem(comIDTrue, comClose, true, true);//选中则关闭；只显示选中的COM口且前面勾对号(最后一个true)_wh
+							setAutoConnect();				
+						}
+						else{
+							arduino.close();//重新关闭_wh
+							CFunConCir(0);
+						}
+					}
+					else{
+						switch(comArrays[i]){//最多显示到32_wh
+							case 'COM1':m.addItem(comArrays[i], comOpen1);break;//选中则开启_wh
+							case 'COM2':m.addItem(comArrays[i], comOpen2);break;//选中则开启_wh
+							case 'COM3':m.addItem(comArrays[i], comOpen3);break;//选中则开启_wh
+							case 'COM4':m.addItem(comArrays[i], comOpen4);break;//选中则开启_wh
+							case 'COM5':m.addItem(comArrays[i], comOpen5);break;//选中则开启_wh
+							case 'COM6':m.addItem(comArrays[i], comOpen6);break;//选中则开启_wh
+							case 'COM7':m.addItem(comArrays[i], comOpen7);break;//选中则开启_wh
+							case 'COM8':m.addItem(comArrays[i], comOpen8);break;//选中则开启_wh
+							case 'COM9':m.addItem(comArrays[i], comOpen9);break;//选中则开启_wh
+							case 'COM10':m.addItem(comArrays[i], comOpen10);break;//选中则开启_wh
+							case 'COM11':m.addItem(comArrays[i], comOpen11);break;//选中则开启_wh
+							case 'COM12':m.addItem(comArrays[i], comOpen12);break;//选中则开启_wh
+							case 'COM13':m.addItem(comArrays[i], comOpen13);break;//选中则开启_wh
+							case 'COM14':m.addItem(comArrays[i], comOpen14);break;//选中则开启_wh
+							case 'COM15':m.addItem(comArrays[i], comOpen15);break;//选中则开启_wh
+							case 'COM16':m.addItem(comArrays[i], comOpen16);break;//选中则开启_wh
+							case 'COM17':m.addItem(comArrays[i], comOpen17);break;//选中则开启_wh
+							case 'COM18':m.addItem(comArrays[i], comOpen18);break;//选中则开启_wh
+							case 'COM19':m.addItem(comArrays[i], comOpen19);break;//选中则开启_wh
+							case 'COM20':m.addItem(comArrays[i], comOpen20);break;//选中则开启_wh
+							case 'COM21':m.addItem(comArrays[i], comOpen21);break;//选中则开启_wh
+							case 'COM22':m.addItem(comArrays[i], comOpen22);break;//选中则开启_wh
+							case 'COM23':m.addItem(comArrays[i], comOpen23);break;//选中则开启_wh
+							case 'COM24':m.addItem(comArrays[i], comOpen24);break;//选中则开启_wh
+							case 'COM25':m.addItem(comArrays[i], comOpen25);break;//选中则开启_wh
+							case 'COM26':m.addItem(comArrays[i], comOpen26);break;//选中则开启_wh
+							case 'COM27':m.addItem(comArrays[i], comOpen27);break;//选中则开启_wh
+							case 'COM28':m.addItem(comArrays[i], comOpen28);break;//选中则开启_wh
+							case 'COM29':m.addItem(comArrays[i], comOpen29);break;//选中则开启_wh
+							case 'COM30':m.addItem(comArrays[i], comOpen30);break;//选中则开启_wh
+							case 'COM31':m.addItem(comArrays[i], comOpen31);break;//选中则开启_wh
+							case 'COM32':m.addItem(comArrays[i], comOpen32);break;//选中则开启_wh
+							default:break;
+						}
+					}
 				}
-				else
-				{
-					arduino.close();//重新关闭_wh
-					CFunConCir(0);
-				}
+			}
+			else{
+				m.addItem(comIDTrue, comClose, true, true);
+				xuhy_test_log("showCOMMenu comStatus = 0x00");
 			}
 			m.addLine();
 			
@@ -2700,20 +2711,20 @@ public class Scratch extends Sprite {
 	
 	public function setAutoConnect():uint
 	{
-		var intervalDuration:Number = 1000;  
+		var intervalDuration:Number = 1500;  
 		for(IntervalID; IntervalID>0x00;IntervalID-- )
 		{
 			clearInterval(IntervalID);
 		}
 		
 		IntervalID = setInterval(onTick_searchAndCheckUart, intervalDuration);
-		uartDetectStatustimerStop = uartDetectStatustimerStart = 0x00;
+		uartDetectStatustimerStop = uartDetectStatustimerStart;
 		app.xuhy_test_log("setAutoConnect " + comIDTrue  + " ; IntervalID = " + IntervalID);
 		return IntervalID;
 	}
 	
 	
-	private var uartDetectStatustimerStart:Number = 0x00;
+	private const uartDetectStatustimerStart:Number = 0x00;
 	private var uartDetectStatustimerStop:Number  = 0x00;
 	public  var  comStatus:int                    = 0x03;  				//com口的工作状态 0x00:连接正常 0x01:意外断开 0x02断开com口
 	private var  notConnectArduinoCount:int       = 0x00;
@@ -2732,25 +2743,22 @@ public class Scratch extends Sprite {
 				CFunConCir(1);					//该部分功能占用较多时间，要保证其只执行一次
 				CFunConCir_Flag = true;
 			}
-			app.xuhy_test_log("onTick_searchAndCheckUart com is --OK--");
+			app.xuhy_test_log("onTick_searchAndCheckUart com is --OK-- ,IntervalID = "+ IntervalID);
 		}
 		else
 		{
 			notConnectArduinoCount ++ ;
-			if(notConnectArduinoCount >= 3)
+			if(notConnectArduinoCount >= 2)
 			{	
-				app.xuhy_test_log("uart disconnect unexpected comStatus = " + comStatus + ";IntervalID = " + IntervalID);
+				app.xuhy_test_log("uart disconnect unexpected comStatus = " + comStatus + "; IntervalID = " + IntervalID);
 				comStatus = 0x01;
 				notConnectArduinoCount = 0x00;	
 				CFunConCir_Flag = false;
-	
+
 				arduino.writeString('UART Close '+comIDTrue+'\n');//_wh
-//				arduino.flush();	//清除缓存_wh
-//				arduino.close();	//关闭COM口_wh
 				CFunConCir(0);
 				clearInterval(IntervalID);
 				IntervalID = 0x00;
-				CFunConCir_Flag = false;
 				readCDFlag = false;//通信丢失提示框标志清零_wh
 			}
 		}
