@@ -364,11 +364,11 @@ public class Interpreter {
 							var file:File = new File();
 //							var process:NativeProcess = new NativeProcess();
 //							var nativePSInfo:NativeProcessStartupInfo = new NativeProcessStartupInfo();
-							file = file.resolvePath(File.userDirectory.resolvePath("AS-Block/ArduinoBuilder/cmd.exe").nativePath);//调用cmd.exe_wh
+							file = file.resolvePath(File.userDirectory.resolvePath("YoungMakerASBlock/ArduinoBuilder/cmd.exe").nativePath);//调用cmd.exe_wh
 							app.nativePSInfo.executable = file;
 							app.process.start(app.nativePSInfo);//执行dos命令_wh
-							var str:String = File.userDirectory.resolvePath("AS-Block/ArduinoBuilder").nativePath;
-							app.process.standardInput.writeUTFBytes("cd /d "+ File.userDirectory.resolvePath("AS-Block/ArduinoBuilder").nativePath +"\r\n");//cmd命令路径，回车符，/r/n_wh
+							var str:String = File.userDirectory.resolvePath("YoungMakerASBlock/ArduinoBuilder").nativePath;
+							app.process.standardInput.writeUTFBytes("cd /d "+ File.userDirectory.resolvePath("YoungMakerASBlock/ArduinoBuilder").nativePath +"\r\n");//cmd命令路径，回车符，/r/n_wh
 							app.process.standardInput.writeUTFBytes("ArduinoUploader arduinos.ino 1 " + app.comIDTrue + " 16MHZ" + "\r\n");//avrdude命令行_wh
 
 							app.UpDialog.setText(Translator.map("compiliation") + " ... ");

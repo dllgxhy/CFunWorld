@@ -457,17 +457,17 @@ public class Scratch extends Sprite {
 		}
 		
 		//Arduino程序生成相关文件新建_wh
-		app.ArduinoHeadFile= new File(File.userDirectory.resolvePath("AS-Block/arduinos/head.txt").nativePath);
+		app.ArduinoHeadFile= new File(File.userDirectory.resolvePath("YoungMakerASBlock/arduinos/head.txt").nativePath);
 		app.ArduinoHeadFs = new FileStream();
-		app.ArduinoPinFile= new File(File.userDirectory.resolvePath("AS-Block/arduinos/pin.txt").nativePath);
+		app.ArduinoPinFile= new File(File.userDirectory.resolvePath("YoungMakerASBlock/arduinos/pin.txt").nativePath);
 		app.ArduinoPinFs = new FileStream();
-		app.ArduinoDoFile= new File(File.userDirectory.resolvePath("AS-Block/arduinos/do.txt").nativePath);
+		app.ArduinoDoFile= new File(File.userDirectory.resolvePath("YoungMakerASBlock/arduinos/do.txt").nativePath);
 		app.ArduinoDoFs = new FileStream();
-		app.ArduinoLoopFile= new File(File.userDirectory.resolvePath("AS-Block/arduinos/loop.txt").nativePath);
+		app.ArduinoLoopFile= new File(File.userDirectory.resolvePath("YoungMakerASBlock/arduinos/loop.txt").nativePath);
 		app.ArduinoLoopFs = new FileStream();
-		app.ArduinoFile= new File(File.userDirectory.resolvePath("AS-Block/arduinos/arduinos.ino").nativePath);
+		app.ArduinoFile= new File(File.userDirectory.resolvePath("YoungMakerASBlock/arduinos/arduinos.ino").nativePath);
 		app.ArduinoFs = new FileStream();
-		app.ArduinoFileB= new File(File.userDirectory.resolvePath("AS-Block/ArduinoBuilder/arduinos.ino").nativePath);
+		app.ArduinoFileB= new File(File.userDirectory.resolvePath("YoungMakerASBlock/ArduinoBuilder/arduinos.ino").nativePath);
 		app.ArduinoFsB = new FileStream();
 		
 		
