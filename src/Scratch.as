@@ -2129,7 +2129,7 @@ public class Scratch extends Sprite {
 		CFunConCir(0);
 		clearInterval(IntervalID);
 //		IntervalID = 0x00;
-		RemoveConnectComIDText();
+//		RemoveConnectComIDText();
 		readCDFlag = false;//通信丢失提示框标志清零_wh
 	}
 	
@@ -2642,6 +2642,7 @@ public class Scratch extends Sprite {
 			if(notConnectArduinoCount > 2)
 			{		
 				comStatus = 0x01;
+				comTrue = false;	//该参数放置在此处，可以让USB意外断开后，在“连接菜单”下的 COMID号前的 对号 去掉
 				notConnectArduinoCount = 0x00;	
 				CFunConCir_Flag = false;
 				arduino.writeString('UART Close '+comIDTrue+'\n');//_wh
