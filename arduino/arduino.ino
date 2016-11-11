@@ -2,6 +2,7 @@
 ///////////////////////////////////////////////////////////
 //#include <Wire.h>
 #include <Servo.h>
+#include <avr/wdt.h>
 #include "YoungMakerPort.h"
 #include "YoungMakerDCMotor.h"
 #include "YoungMakerAvoid.h"
@@ -99,6 +100,7 @@ unsigned long _distime;            //seg current time
 float _disvalue;                   // store last dispaly value
 
 char _LCD_flag=1;                //ensure LCD intialize only once
+boolean sendArduinoHeartFlag = false;
 /////////////////////////////////////////////////////////////
 unsigned char readBuffer(int index);
 void writeBuffer(int index, unsigned char c);
@@ -119,6 +121,7 @@ void setup() {
   gyro.begin();
 #endif
   Serial.begin(115200);
+  wdt_enable(WDTO_2S);
 }
 ///////////////////////////////////////////////////////////////////////
 void loop() {
@@ -128,8 +131,9 @@ void loop() {
 //	ScratchBoardSensorReport();
 //	updateServoMotors = false;
 // }
-  delay(50);
-  ScratchBoardSensorReport();
+//  delay(50);
+  delay(40);								//延时40s
+   ScratchBoardSensorReport();
   readSerial();
   if (isAvailable) {                         //ruguo you shuju shuru
     unsigned char c = serialRead & 0xff;     //duqu shuru shuju
@@ -164,7 +168,6 @@ void loop() {
       index = 0;
     }
   }
-
 }
 
 
@@ -175,15 +178,11 @@ void loop() {
 数据类型
 */
 
-int getUltimateSonicDataFlag = 0x00;
 void ScratchBoardSensorReport() //PicoBoard protocol, 2 bytes per sensor
 {
   char i = 0x00; 
-  readSensorValues();
-  if(getUltimateSonicDataFlag == 0x01){
-    readUltraSonicValues();
-	getUltimateSonicDataFlag = 0x00;
-  }
+  readSensorValues();				//读传感器
+//  readUltraSonicValues();			//读超声波
   Serial.write(0xfe);
   Serial.write(0xfd);  
   Serial.write(0x14);  
@@ -194,6 +193,7 @@ void ScratchBoardSensorReport() //PicoBoard protocol, 2 bytes per sensor
   }  
   Serial.write(0xfe);
   Serial.write(0xfb);
+  wdt_reset();
 }
 
 /*
@@ -469,7 +469,7 @@ void parseData() {
       break;
     case 0x51: { //超声波，当Scratch要这个数据的时候才利用传感器，否则不使用
 //		value = us.distanceCm();
-		getUltimateSonicDataFlag = 0x01;
+//		getUltimateSonicDataFlag = 0x01;
 	  }
       break;
     case 0x52: { //track
@@ -779,6 +779,19 @@ void parseData() {
         CFun_last_time = millis();
       }
       break;
+	
+    case 0x33:
+		int dataIndex = 3;
+      int pin = readBuffer(dataIndex++);
+		int index = readBuffer(dataIndex++);
+		if(index != 0x00)
+		{
+			sendArduinoHeartFlag = true;
+		}
+		else
+		{
+			sendArduinoHeartFlag = false;
+		}	
   }
 }
 

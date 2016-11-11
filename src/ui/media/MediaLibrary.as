@@ -138,6 +138,12 @@ public class MediaLibrary extends Sprite {
 		parent.removeChild(this);
 		app.mediaLibrary = null;
 		app.reopenTips();
+		if(app.LibraryButtonDown == true)
+		{
+			app.libraryPart.arduinoConnectTimer.start();
+			app.LibraryButtonDown = false;
+			app.xuhy_test_log("xuhy close comIDTrue = "+app.comIDTrue);
+		}
 	}
 
 	public function setWidthHeight(w:int, h:int):void {
@@ -441,6 +447,7 @@ public class MediaLibrary extends Sprite {
 				}
 			}
 		}
+		
 	}
 	
 	public function initSelected():void {//初始化选择_xuhy

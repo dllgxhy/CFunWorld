@@ -324,7 +324,7 @@ package primitives
 				app.arduino.writeByte(0x00);
 				app.arduino.writeByte(0x00);
 				app.arduino.writeByte(hl);
-				app.CFunDelayms(10);//延时15ms_wh
+//				app.CFunDelayms(10);//延时15ms_wh
 			}
 		}
 		

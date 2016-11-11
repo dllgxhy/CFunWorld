@@ -178,7 +178,7 @@ public class Scratch extends Sprite {
 	
 	public var arduino:ArduinoConnector;//串口类_wh
 	public var comTrue:Boolean = false;//COM口是否开启_wh
-	public var comIDTrue:String;//当前选中打开的COM口_wh
+	public var comIDTrue:String = 'COM0';//当前选中打开的COM口_wh
 	public var comDataArray:Array = new Array();//串口接收数据缓存_wh
 	public var comDataArrayOld:Array = new Array();//串口接收数据缓存未处理数据_wh
 	public var comRevFlag:Boolean = false;//串口数据接收完整性判断标识_wh
@@ -280,6 +280,7 @@ public class Scratch extends Sprite {
 	public var showCOMFlag:Boolean = false;//COM口正在连接_wh
 	public var IntervalID:uint = 0x00; 				//查询UART是否工作正常定时器的ID号，可以用于清除定时器。
 	
+	public var LibraryButtonDown:Boolean = false;
 	/*************************************************************************************************/
 	public var debugwh:Boolean = false;//是否为debug模式（应用文件路径读取无法在debug模式上通过）_wh
 	/*************************************************************************************************/
@@ -954,6 +955,7 @@ public class Scratch extends Sprite {
 			dllOk = 12;
 			DialogBox.warnconfirm(OS + " User","please open with administrator privileges", null, app.stage);//软件界面中部显示提示框_wh
 		}
+		
 	}
 
 	public function updateSpriteLibrary(sortByIndex:Boolean = false):void { libraryPart.refresh() }
@@ -2592,7 +2594,7 @@ public class Scratch extends Sprite {
 	
 	public function setAutoConnect():uint
 	{
-		var intervalDuration:Number = 1000;  
+		var intervalDuration:Number = 1500;  
 
 		clearInterval(IntervalID);
 		arduino.dispose();
@@ -2601,7 +2603,7 @@ public class Scratch extends Sprite {
 		arduino.close();
 		arduino.flush();
 		var ts:Number = getTimer();
-		while((getTimer()-ts) < 100)
+		while((getTimer()-ts) < 50)
 			;
 		arduino.connect(comIDTrue,115200);
 		arduino.addEventListener("socketData", fncArduinoData);//串口接收事件监测，在fncArduinoData函数中处理_wh
@@ -2635,9 +2637,11 @@ public class Scratch extends Sprite {
 		else
 		{
 			notConnectArduinoCount ++ ;
-			if((notConnectArduinoCount >= 1) && (notConnectArduinoCount <= 2)){
+			if(notConnectArduinoCount == 1){
 				xuhy_test_log("check heart phase 1 start");
-				
+				if(LibraryButtonDown){
+					notConnectArduinoCount = 0x00;
+				}
 			}
 			if(notConnectArduinoCount > 2)
 			{		

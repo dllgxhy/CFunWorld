@@ -23,15 +23,29 @@
 // This part holds the Sprite Library and the UI elements around it.
 
 package ui.parts {
-	import flash.display.*;
-	import flash.geom.*;
-	import flash.text.*;
-	import flash.utils.*;
-	import scratch.*;
+	import flash.display.BitmapData;
+	import flash.display.Graphics;
+	import flash.display.Shape;
+	import flash.events.TimerEvent;
+	import flash.text.TextField;
+	import flash.text.TextFormat;
+	import flash.utils.Timer;
+	import flash.utils.getTimer;
+	
+	import scratch.ScratchCostume;
+	import scratch.ScratchObj;
+	import scratch.ScratchSprite;
+	
 	import translation.Translator;
-	import ui.media.*;
+	
 	import ui.SpriteThumbnail;
-	import uiwidgets.*;
+	import ui.media.MediaLibrary;
+	
+	import uiwidgets.IconButton;
+	import uiwidgets.ScrollFrame;
+	import uiwidgets.ScrollFrameContents;
+	import uiwidgets.SimpleTooltips;
+	
 	import util.ProjectIO;
 
 public class LibraryPart extends UIPart {
@@ -66,7 +80,10 @@ public class LibraryPart extends UIPart {
 
 	private var videoLabel:TextField;
 	private var videoButton:IconButton;
-
+	
+	public var arduinoConnectTimer:Timer ;
+ 
+		
 	public function LibraryPart(app:Scratch) {
 		this.app = app;
 		shape = new Shape();
@@ -91,8 +108,16 @@ public class LibraryPart extends UIPart {
 		spriteDetails.visible = false;
 
 		updateTranslation();
+		
+		arduinoConnectTimer = new Timer(1000,1);
+		arduinoConnectTimer.addEventListener(TimerEvent.TIMER_COMPLETE, onTimerCompletearduino);
 	}
-
+	protected function onTimerCompletearduino(event:TimerEvent):void 
+	{ 
+//		app.arduino.connect(app.comIDTrue,115200);	
+		app.setAutoConnect();
+		app.xuhy_test_log("onTimerCompletearduino");
+	} 
 	public static function strings():Array {
 		return [
 			'Sprites', 'New sprite:', 'New backdrop:', 'Video on:', 'backdrop1', 'costume1', 'photo1', 'pop',
@@ -243,9 +268,12 @@ public class LibraryPart extends UIPart {
 			if (updateThumbnails) tn.updateThumbnail();
 			tn.select(tn.targetObj == viewedObj);
 		}
-		if (updateThumbnails) lastUpdate = getTimer();
-		if (spriteDetails.visible) spriteDetails.step();
-		if (videoButton.visible) updateVideoButton();
+		if (updateThumbnails) 
+			lastUpdate = getTimer();
+		if (spriteDetails.visible) 
+			spriteDetails.step();
+		if (videoButton.visible) 
+			updateVideoButton();
 	}
 
 	private function addStageArea():void {
@@ -434,8 +462,14 @@ public class LibraryPart extends UIPart {
 	}
 
 	private function backdropFromLibrary(b:IconButton):void {
+		
+		app.arduino.close();
+		app.LibraryButtonDown = true;  //更换背景指示标示
+		
+		app.xuhy_test_log("xuhy comIDTrue = "+app.comIDTrue);
 		var lib:MediaLibrary = app.getMediaLibrary('backdrop', addBackdrop);
 		lib.open();
+
 	}
 
 	private function paintBackdrop(b:IconButton):void {
